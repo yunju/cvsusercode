@@ -1,6 +1,6 @@
 //=====================================================================-*-C++-*-
 // File and Version Information:
-//      $Id: RooUnfoldExample.cxx 248 2010-10-04 22:18:19Z T.J.Adye $
+//      $Id: RooUnfoldData_v1.cxx,v 1.1 2011/04/20 19:38:35 yunju Exp $
 //
 // Description:
 //      Simple example usage of the RooUnfold package using toy MC.
@@ -144,7 +144,11 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
         nbytes+=ntuple->GetEntry(jentry);
         if(TcBin<Binmax&&TcBin>=Binmin )
         {
-  
+           for(int nsca=0;nsca<scale15;nsca++)
+              {  
+                  response.Fill (respt[1],respt[0] );
+              }
+           /*
            if(jentry%2==1)
            {  
               for(int nsca=0;nsca<scale15;nsca++)
@@ -161,6 +165,7 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
                hTrue->Fill(respt[0]);
                }
            }
+           */
        }
 
      }
@@ -184,7 +189,12 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
         nbytes2+=ntuple2->GetEntry(jentry);
         if(TcBin<Binmax&&TcBin>=Binmin )
         {
-            if(jentry%2==1)
+           for(int nsca=0;nsca<scale30;nsca++)
+              {  
+                  response.Fill (respt[1],respt[0] );
+              }
+/* 
+           if(jentry%2==1)
            {  
               for(int nsca=0;nsca<scale30;nsca++)
               {  
@@ -200,6 +210,7 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
                hTrue->Fill(respt[0]);
                }
            }
+*/
        }
 
      }
@@ -222,6 +233,11 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
         nbytes3+=ntuple3->GetEntry(jentry);
         if(TcBin<Binmax&&TcBin>=Binmin )
         {
+           for(int nsca=0;nsca<scale50;nsca++)
+           {  
+                  response.Fill (respt[1],respt[0] );
+           }
+           /*
            if(jentry%2==1)
            {  
               for(int nsca=0;nsca<scale50;nsca++)
@@ -238,6 +254,7 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
                hTrue->Fill(respt[0]);
                }
            }
+        */
        }
 
      }
@@ -259,6 +276,12 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
         nbytes4+=ntuple4->GetEntry(jentry);
         if(TcBin<Binmax&&TcBin>=Binmin )
         {
+
+           for(int nsca=0;nsca<scale80;nsca++)
+           {  
+             response.Fill (respt[1],respt[0] );
+           }
+           /*
            if(jentry%2==1)
            {  
               for(int nsca=0;nsca<scale80;nsca++)
@@ -275,6 +298,8 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
                hTrue->Fill(respt[0]);
                }
            }
+           */
+
        }
 
      }
@@ -309,7 +334,7 @@ RooUnfoldBinByBin unfold (&response, hdata);
 }
 
    TH1D* hReco= (TH1D*) unfold.Hreco();
-   unfold.PrintTable (cout, hTrue);
+  // unfold.PrintTable (cout, hTrue);
 
    TCanvas *c10 = new TCanvas("c11","c11",600,500);
    TLegend *tleg = new TLegend(0.65, 0.6, 0.85, 0.85);
@@ -326,11 +351,17 @@ RooUnfoldBinByBin unfold (&response, hdata);
    hReco->SetLineColor(2);
    hReco->Draw("SAME");
    hdata->Draw("histSAME");
-   hTrue->SetLineColor(8);
+  // hTrue->SetLineColor(8);
    //hTrue->Draw("histSAME");
    tleg->Draw("same");
    la1->Draw();
    c10->Print(Form("HiunfoPLots/centr_%d_Method_%d_v4.png",setcbin,method));
+    printf("Result -----------  Centrality bin : %d ; Method : %s ------------ \n",setcbin,chmet1);
+   for(int nbhis=0;nbhis<hdata->GetNbinsX();nbhis++)
+   {
+    
+     printf("Bin center %5.2f  Input : %10.2f  ; Output %10.2f \n",hdata->GetBinCenter(nbhis+1),hdata->GetBinContent(nbhis+1),hReco->GetBinContent(nbhis+1)  );
+   }
 }
 
 
