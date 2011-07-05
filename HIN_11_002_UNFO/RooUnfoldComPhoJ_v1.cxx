@@ -1,6 +1,6 @@
 //=====================================================================-*-C++-*-
 // File and Version Information:
-//      $Id: RooUnfoldExample.cxx 248 2010-10-04 22:18:19Z T.J.Adye $
+//      $Id: RooUnfoldComPhoJ_v1.cxx,v 1.1 2011/04/20 19:38:35 yunju Exp $
 //
 // Description:
 //      Simple example usage of the RooUnfold package using toy MC.
@@ -111,14 +111,19 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
      //Pthat 15
      cout<<" Read Pt hat 15 - 30 "<<endl;
 
-     double respt[2];
-     int TcBin;
+     double pt15respt[2];
+     int pt15TcBin;
 
      TFile *ttfile = new TFile("HiRecoPhoton_pthat_15_30.root");
      TTree *ntuple =(TTree*)ttfile->Get("ntuple");
      
-     ntuple ->SetBranchAddress("respt",respt);
-     ntuple ->SetBranchAddress("TcBin",&TcBin);
+     TBranch *b_respt = ntuple->GetBranch("respt");
+     b_respt->SetAddress(pt15respt);
+     
+     TBranch *b_TcBin = ntuple->GetBranch("TcBin");
+     b_TcBin->SetAddress(&pt15TcBin); 
+     
+          
      Long64_t nentries = ntuple ->GetEntries();
      Long64_t nbytes = 0, nb = 0;
 
@@ -126,15 +131,17 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
 
      for (Long64_t jentry=0; jentry<nentries;jentry++)
      {
-        nbytes+=ntuple->GetEntry(jentry);
-        if(TcBin<Binmax&&TcBin>=Binmin )
+        
+          b_respt->GetEntry(jentry);
+          b_TcBin->GetEntry(jentry);       
+        if(pt15TcBin<Binmax&&pt15TcBin>=Binmin )
         {
   
            if(jentry%2==1)
            {  
               for(int nsca=0;nsca<scale15;nsca++)
               {  
-                  response.Fill (respt[1],respt[0] );
+                  response.Fill (pt15respt[1],pt15respt[0] );
               }
 
            }
@@ -142,8 +149,8 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
            {
                for(int nsca=0;nsca<scale15;nsca++)
                {
-               hMeas->Fill(respt[1]);
-               hTrue->Fill(respt[0]);
+               hMeas->Fill(pt15respt[1]);
+               hTrue->Fill(pt15respt[0]);
                }
            }
        }
@@ -156,9 +163,15 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
      //Pthat 30
      TFile *tfile2 = new TFile("HiRecoPhoton_pthat_30_50.root");
      TTree *ntuple2 =(TTree*)tfile2->Get("ntuple");
-   
-     ntuple2 ->SetBranchAddress("respt",respt);
-     ntuple2 ->SetBranchAddress("TcBin",&TcBin);
+     double pt30respt[2];
+     int pt30TcBin;
+ 
+      TBranch*b30_respt = ntuple2->GetBranch("respt");
+      b30_respt->SetAddress(pt30respt);
+
+      TBranch *b30_TcBin = ntuple2->GetBranch("TcBin");
+      b30_TcBin->SetAddress(&pt30TcBin);
+
      Long64_t nentries2 = ntuple2 ->GetEntries();
      Long64_t nbytes2 = 0, nb2 = 0;
 
@@ -166,14 +179,15 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
 
      for (Long64_t jentry=0; jentry<nentries2;jentry++)
      {
-        nbytes2+=ntuple2->GetEntry(jentry);
-        if(TcBin<Binmax&&TcBin>=Binmin )
+        b30_respt->GetEntry(jentry);
+        b30_TcBin->GetEntry(jentry); 
+        if(pt30TcBin<Binmax&&pt30TcBin>=Binmin )
         {
             if(jentry%2==1)
            {  
               for(int nsca=0;nsca<scale30;nsca++)
               {  
-                  response.Fill (respt[1],respt[0] );
+                  response.Fill (pt30respt[1],pt30respt[0] );
               }
 
            }
@@ -181,8 +195,8 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
            {
                for(int nsca=0;nsca<scale30;nsca++)
                {
-               hMeas->Fill(respt[1]);
-               hTrue->Fill(respt[0]);
+               hMeas->Fill(pt30respt[1]);
+               hTrue->Fill(pt30respt[0]);
                }
            }
        }
@@ -195,23 +209,38 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
      //Pthat 50
      TFile *tfile3 = new TFile("HiRecoPhoton_pthat_50_80.root");
      TTree *ntuple3 =(TTree*)tfile3->Get("ntuple");
+     double pt50respt[2];
+      int pt50TcBin;
+
+  //setting the branch address
+  TBranch *b50_respt = ntuple3->GetBranch("respt");
+  b50_respt->SetAddress(pt50respt);
+
+  TBranch *b50_TcBin = ntuple3->GetBranch("TcBin");
+  b50_TcBin->SetAddress(&pt50TcBin);
    
-     ntuple3 ->SetBranchAddress("respt",respt);
-     ntuple3 ->SetBranchAddress("TcBin",&TcBin);
+
+
+
+
+
      Long64_t nentries3 = ntuple3 ->GetEntries();
      Long64_t nbytes3 = 0, nb3 = 0;
 
     
      for (Long64_t jentry=0; jentry<nentries3;jentry++)
      {
-        nbytes3+=ntuple3->GetEntry(jentry);
-        if(TcBin<Binmax&&TcBin>=Binmin )
+         b50_respt->GetEntry(jentry);
+         b50_TcBin->GetEntry(jentry);
+         
+ 
+        if(pt50TcBin<Binmax&&pt50TcBin>=Binmin )
         {
            if(jentry%2==1)
            {  
               for(int nsca=0;nsca<scale50;nsca++)
               {  
-                  response.Fill (respt[1],respt[0] );
+                  response.Fill (pt50respt[1],pt50respt[0] );
               }
 
            }
@@ -219,8 +248,8 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
            {
                for(int nsca=0;nsca<scale50;nsca++)
                {
-               hMeas->Fill(respt[1]);
-               hTrue->Fill(respt[0]);
+               hMeas->Fill(pt50respt[1]);
+               hTrue->Fill(pt50respt[0]);
                }
            }
        }
@@ -234,21 +263,36 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
      TFile *tfile4 = new TFile("HiRecoPhoton_pthat_80_10000.root");
      TTree *ntuple4 =(TTree*)tfile4->Get("ntuple");
    
-     ntuple4 ->SetBranchAddress("respt",respt);
-     ntuple4 ->SetBranchAddress("TcBin",&TcBin);
+     double pt80respt[2];
+      int pt80TcBin;
+
+  //setting the branch address
+    TBranch *b80_respt = ntuple4->GetBranch("respt");
+    b80_respt->SetAddress(pt80respt);
+
+    TBranch *b80_TcBin = ntuple4->GetBranch("TcBin");
+    b80_TcBin->SetAddress(&pt80TcBin);
+   
+
+
+   
      Long64_t nentries4 = ntuple4 ->GetEntries();
      Long64_t nbytes4 = 0, nb4 = 0;
 
      for (Long64_t jentry=0; jentry<nentries4;jentry++)
      {
-        nbytes4+=ntuple4->GetEntry(jentry);
-        if(TcBin<Binmax&&TcBin>=Binmin )
+ 
+         b80_respt->GetEntry(jentry);
+         b80_TcBin->GetEntry(jentry);
+         
+ 
+        if(pt80TcBin<Binmax&&pt80TcBin>=Binmin )
         {
            if(jentry%2==1)
            {  
               for(int nsca=0;nsca<scale80;nsca++)
               {  
-                  response.Fill (respt[1],respt[0] );
+                  response.Fill (pt80respt[1],pt80respt[0] );
               }
 
            }
@@ -256,8 +300,8 @@ printf(" Centrality bin : %d ; Method : %s \n",setcbin,chmet1);
            {
                for(int nsca=0;nsca<scale80;nsca++)
                {
-               hMeas->Fill(respt[1]);
-               hTrue->Fill(respt[0]);
+               hMeas->Fill(pt80respt[1]);
+               hTrue->Fill(pt80respt[0]);
                }
            }
        }
