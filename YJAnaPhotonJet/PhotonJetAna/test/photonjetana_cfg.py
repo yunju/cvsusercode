@@ -76,9 +76,8 @@ addJetCollection(process,
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-      #  'file:/home/yunju/CDXFE_QCD/TwoK11_July/YJAna2011/CMSSW_4_1_3_patch2/src/YJAnaPhotonJet/PhotonJetAna/test/Wenu1200outputAOD.root'
-'file:/home/yunju/CDXFE_QCD/TwoK11_July/YJAna2011/CMSSW_4_1_3_patch2/src/PhoJet_15AODSIM.root'
-#'/home/yunju/CDXFE_QCD/TwoK11_July/outputAOD.root'
+      'file:/data2/yunju/Summer2011/PhoJet_15AODSIM.root'
+
     )
 )
 
