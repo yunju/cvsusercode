@@ -13,7 +13,7 @@
 //
 // Original Author:  Yun-Ju Lu,27 2-004,+41227676186,
 //         Created:  Fri Jul  8 15:56:55 CEST 2011
-// $Id$
+// $Id: PhotonJetAna.cc,v 1.1 2011/07/12 17:06:56 yunju Exp $
 //
 //
 
@@ -193,7 +193,7 @@ PhotonJetAna::PhotonJetAna(const edm::ParameterSet& ps)
      tree_->Branch("PhoScPhi", PhoScPhi_, "PhoScPhi[nPho]/F");
      tree_->Branch("PhoScEta", PhoScEta_, "PhoScEta[nPho]/F");
      tree_->Branch("PhoESRatio", PhoESRatio_, "PhoESRatio[nPho]/F");
-     tree_->Branch("PhoESRatio", PhoESRatio_, "PhoESRatio[nPho]/F");
+    
      tree_->Branch("PhoSigmaIetaIeta", PhoSigmaIetaIeta_, "PhoSigmaIetaIeta[nPho]/F");
      tree_->Branch("PhoSigmaIphiIphi", PhoSigmaIphiIphi_, "PhoSigmaIphiIphi[nPho]/F");
      tree_->Branch("PhoSeedTime", PhoSeedTime_, "PhoSeedTime[nPho]/F");
