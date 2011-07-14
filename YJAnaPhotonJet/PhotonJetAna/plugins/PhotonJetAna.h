@@ -324,6 +324,10 @@ class PhotonJetAna : public edm::EDAnalyzer {
       Float_t  PhogenMomId_[maxP]; 
       Float_t  PhogenGrandMomId_[maxP];
       Float_t  PhogenNSiblings_[maxP];
+      Float_t  PhogenMatchedE_[maxP];
+      Float_t  PhogenMatchedPx_[maxP];
+      Float_t  PhogenMatchedPy_[maxP];
+      Float_t  PhogenMatchedPz_[maxP];
       Float_t  PhogenMatchedPt_[maxP];
       Float_t  PhogenMatchedEta_[maxP];
       Float_t  PhogenMatchedPhi_[maxP];

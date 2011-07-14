@@ -13,7 +13,7 @@
 //
 // Original Author:  Yun-Ju Lu,27 2-004,+41227676186,
 //         Created:  Fri Jul  8 15:56:55 CEST 2011
-// $Id: PhotonJetAna.cc,v 1.1 2011/07/12 17:06:56 yunju Exp $
+// $Id: PhotonJetAna.cc,v 1.2 2011/07/14 10:44:17 yunju Exp $
 //
 //
 
@@ -210,6 +210,11 @@ PhotonJetAna::PhotonJetAna(const edm::ParameterSet& ps)
      tree_->Branch("PhogenMomId", PhogenMomId_, "PhogenMomId[nPho]/F");
      tree_->Branch("PhogenGrandMomId", PhogenGrandMomId_, "PhogenGrandMomId[nPho]/F");
      tree_->Branch("PhogenNSiblings", PhogenNSiblings_, "PhogenNSiblings[nPho]/F");
+     
+     tree_->Branch("PhogenMatchedE", PhogenMatchedE_, "PhogenMatchedE[nPho]/F");
+     tree_->Branch("PhogenMatchedPx", PhogenMatchedPx_, "PhogenMatchedPx[nPho]/F");
+     tree_->Branch("PhogenMatchedPy", PhogenMatchedPy_, "PhogenMatchedPy[nPho]/F"); 
+     tree_->Branch("PhogenMatchedPz", PhogenMatchedPz_, "PhogenMatchedPz[nPho]/F");
      tree_->Branch("PhogenMatchedPt", PhogenMatchedPt_, "PhogenMatchedPt[nPho]/F");
      tree_->Branch("PhogenMatchedEta", PhogenMatchedEta_, "PhogenMatchedEta[nPho]/F");
      tree_->Branch("PhogenMatchedPhi", PhogenMatchedPhi_, "PhogenMatchedPhi[nPho]/F");
@@ -936,7 +941,11 @@ int PhotonJetAna::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup
 
       if(cndMc) {
 //	PhogenMatchedP4_ [nPho_]  = TLorentzVector(cndMc->px(),cndMc->py(),cndMc->pz(),cndMc->energy());
-	PhogenMatchedPt_[nPho_]  = cndMc->pt();
+	PhogenMatchedE_[nPho_] = cndMc->energy();
+        PhogenMatchedPx_[nPho_]= cndMc->px();
+        PhogenMatchedPy_[nPho_] =cndMc->py();
+        PhogenMatchedPz_[nPho_] =cndMc->pz();
+        PhogenMatchedPt_[nPho_]  = cndMc->pt();
 	PhogenMatchedEta_[nPho_]  = cndMc->eta();
 	PhogenMatchedPhi_[nPho_]  = cndMc->phi();
 	
