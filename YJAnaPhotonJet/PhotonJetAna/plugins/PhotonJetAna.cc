@@ -13,7 +13,7 @@
 //
 // Original Author:  Yun-Ju Lu,27 2-004,+41227676186,
 //         Created:  Fri Jul  8 15:56:55 CEST 2011
-// $Id: PhotonJetAna.cc,v 1.2 2011/07/14 10:44:17 yunju Exp $
+// $Id: PhotonJetAna.cc,v 1.3 2011/07/14 14:56:51 yunju Exp $
 //
 //
 
@@ -60,15 +60,27 @@ PhotonJetAna::PhotonJetAna(const edm::ParameterSet& ps)
      ptMinC                = ps.getUntrackedParameter<double>("GammaPtMin", 15);
      etaMaxC               = ps.getUntrackedParameter<double>("GammaEtaMax",3);
      hadEmMaxC             = ps.getUntrackedParameter<double>("GammaHadEmMax",0.05);
+  
+
      pdgId_                           = ps.getUntrackedParameter<int>("pdgId", 22);
 
      doGenParticles_   = ps.getParameter<bool>("doGenParticles");
- muInGenCaloIso_                  = ps.getUntrackedParameter<bool>("muInGenCaloIso", 10);   
+      muInGenCaloIso_                  = ps.getUntrackedParameter<bool>("muInGenCaloIso", 10);   
    
  isMC_=true;
 
+  cout<<"otherPdgIds_.size() "<<otherPdgIds_.size()<<endl;
+  for(int iv=0; iv <int( otherPdgIds_.size());iv++)
+  {
+
+    cout<<"allotherPdgId "<<otherPdgIds_[iv]<<endl;
+  }
+ 
+
+
    Service<TFileService> fs;
-    tree_ = fs->make<TTree>("EventTree", "Event data");
+  hEvents_ = fs->make<TH1F>("hEvents", "total processed and skimmed events", 2, 0, 2); 
+   tree_ = fs->make<TTree>("EventTree", "Event data");
     tree_->Branch("run", &run_, "run/I");
    tree_->Branch("event", &event_, "event/I");
    tree_->Branch("orbit", &orbit_, "orbit/I");
@@ -185,6 +197,7 @@ PhotonJetAna::PhotonJetAna(const edm::ParameterSet& ps)
      tree_->Branch("PhoPx", PhoPx_, "PhoPx[nPho]/F");
      tree_->Branch("PhoPy", PhoPy_, "PhoPy[nPho]/F");
      tree_->Branch("PhoPz", PhoPz_, "PhoPz[nPho]/F");
+     tree_->Branch("PhoPt", PhoPt_, "PhoPt[nPho]/F");
      tree_->Branch("PhoEta", PhoEta_, "PhoEta[nPho]/F");
      tree_->Branch("PhoPhi", PhoPhi_, "PhoPhi[nPho]/F");
      tree_->Branch("PhoR9", PhoR9_, "PhoR9[nPho]/F");
@@ -197,6 +210,7 @@ PhotonJetAna::PhotonJetAna(const edm::ParameterSet& ps)
      tree_->Branch("PhoSigmaIetaIeta", PhoSigmaIetaIeta_, "PhoSigmaIetaIeta[nPho]/F");
      tree_->Branch("PhoSigmaIphiIphi", PhoSigmaIphiIphi_, "PhoSigmaIphiIphi[nPho]/F");
      tree_->Branch("PhoSeedTime", PhoSeedTime_, "PhoSeedTime[nPho]/F");
+     tree_->Branch("PhoseedSeverity", PhoseedSeverity_, "PhoseedSeverity[nPho]/I");
      tree_->Branch("PhoE2overe9", PhoE2overe9_, "PhoE2overe9[nPho]/F");
      tree_->Branch("PhohadronicOverEm", PhohadronicOverEm_, "PhohadronicOverEm[nPho]/F");
      tree_->Branch("PhoecalRecHitSumEtConeDR04", PhoecalRecHitSumEtConeDR04_, "PhoecalRecHitSumEtConeDR04[nPho]/F");
@@ -303,14 +317,17 @@ PhotonJetAna::analyze(const edm::Event& e, const edm::EventSetup& iSetup)
 
      
    using namespace edm;
+   hEvents_->Fill(0.5);
    storeGeneral(e);
    storeVertex(e);
   // storeJets(e);
    YJstoreJets(e);
    bool foundPhotons = selectStorePhotons(e,iSetup);
-  // if (foundPhotons){
-    tree_->Fill(); 
-  // }
+   if (foundPhotons){
+   hEvents_->Fill(1.5);
+    tree_->Fill();
+    
+   }
 }
 
 void PhotonJetAna::storeGeneral(const edm::Event& e)
@@ -799,7 +816,7 @@ int PhotonJetAna::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup
 //   seedOutOfTimeChi2     [nPho_]  = outOfTimeChi2;
  //   seedChi2              [nPho_]  = chi2;
  //   seedRecoFlag          [nPho_]  = flags;
- //   seedSeverity          [nPho_]  = severity;
+    PhoseedSeverity_[nPho_]       = severity;
     PhoE2overe9_[nPho_]  = E2E9;
 //    seedEt                [nPho_]  = seedAppEt;
     
@@ -832,15 +849,15 @@ int PhotonJetAna::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup
   //  covEtaPhi    [nPho_] = vCov[1];
   //  covEtaEta    [nPho_] = vCov[0];
 
-  //  vector<float> viCov;
-  //  viCov = lazyTool.localCovariances(*seed);
+    vector<float> viCov;
+    viCov = lazyTool.localCovariances(*seed);
 //cout<<"Here8 ?"<<endl;
 
     // Photon shower shape parameters 
   //  maxEnergyXtal[nPho_] =  photon.maxEnergyXtal();
  //   sigmaEtaEta  [nPho_] =  photon.sigmaEtaEta();
    PhoSigmaIetaIeta_[nPho_] =  photon.sigmaIetaIeta();
-//    sigmaIphiIphi[nPho_] =  sqrt(viCov[2]);
+   PhoSigmaIphiIphi_[nPho_] =  sqrt(viCov[2]);
 //    sigmaIetaIphi[nPho_] =  sqrt(viCov[1]);
 //    r1x5         [nPho_] =  photon.r1x5();
 //    r2x5         [nPho_] =  photon.r2x5();
@@ -895,9 +912,14 @@ int PhotonJetAna::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup
       const reco::Candidate *cndMc(0);
       reco::GenParticleCollection::const_iterator matchedPart;
       Float_t currentMaxPt(-1);
-      
+     // cout<<PhoisGenMatched_[nPho_]<<endl; 
+      PhoisGenMatched_[nPho_] = kFALSE; // intiialize GenMatch
+    //  cout<<PhoisGenMatched_[nPho_]<<endl; 
       for (reco::GenParticleCollection::const_iterator it_gen = 
 	     genParticles->begin(); it_gen!= genParticles->end(); it_gen++){   
+
+       
+         
 
 	const reco::Candidate &p = (*it_gen);    
 	if (p.status() != 1 || (p.pdgId()) != pdgId_ ) continue;      
@@ -913,7 +935,7 @@ int PhotonJetAna::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup
 	  currentMaxPt = p.pt();
 	  matchedPart  = it_gen;
 	}
-      }      
+      }//gen loop      
 	
     	
       // if no matching photon was found try with other particles
