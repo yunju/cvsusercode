@@ -6,41 +6,42 @@ process.load("FWCore.MessageService.MessageLogger_cfi")
 ## Geometry and Detector Conditions (needed for a few patTuple production steps)
 process.load("Configuration.StandardSequences.Geometry_cff")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-# for data
-process.GlobalTag.globaltag = cms.string('START41_V0::All')
+process.load('Configuration.StandardSequences.Reconstruction_cff')
+
+# for 2011 42  data
+process.GlobalTag.globaltag = cms.string('GR_R_42_V12::All')
 
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
-process.TFileService = cms.Service("TFileService", fileName = cms.string('Photonjetana.root'))
+process.TFileService = cms.Service("TFileService", fileName = cms.string('YJPhotonjetana2011.root'))
 
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(500) )
 
 ## Standard PAT Configuration File
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 
+from PhysicsTools.PatAlgos.tools.cmsswVersionTools import *
 from PhysicsTools.PatAlgos.tools.coreTools import *
+## need for run data
+runOnData(process, ['All'], outputInProcess = False)
 
 # Jets
 process.load('JetMETCorrections.Configuration.DefaultJEC_cff')
 
-process.load('RecoJets.JetProducers.kt4PFJets_cfi')
-process.kt6PFJets14 = process.kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-process.kt6PFJets14.Rho_EtaMax = cms.double(1.4442)
-process.fjSequence14 = cms.Sequence( process.kt6PFJets14 )
+#process.load('RecoJets.JetProducers.kt4PFJets_cfi')
+process.load('RecoJets.Configuration.RecoPFJets_cff')
 
-process.kt6PFJets25 = process.kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+process.kt6PFJets25 = process.kt6PFJets.clone( doRhoFastjet = True )
 process.kt6PFJets25.Rho_EtaMax = cms.double(2.5)
 process.fjSequence25 = cms.Sequence( process.kt6PFJets25 )
 
-process.kt6PFJets30 = process.kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
-process.kt6PFJets30.Rho_EtaMax = cms.double(3.0)
-process.fjSequence30 = cms.Sequence( process.kt6PFJets30 )
-
-process.kt6PFJets44 = process.kt4PFJets.clone( rParam = 0.6, doRhoFastjet = True )
+process.kt6PFJets44 = process.kt6PFJets.clone( doRhoFastjet = True )
 process.kt6PFJets44.Rho_EtaMax = cms.double(4.4)
 process.kt6PFJets44.Ghost_EtaMax = cms.double(5.0)
 process.fjSequence44 = cms.Sequence( process.kt6PFJets44 )
+
+
 
 process.patJetCorrFactors.levels = ['L1FastJet', 'L2Relative', 'L3Absolute']
 process.patJetCorrFactors.rho = cms.InputTag('kt6PFJets44','rho')
@@ -76,7 +77,7 @@ addJetCollection(process,
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-      'file:/data2/yunju/Summer2011/PhoJet_15AODSIM.root'
+      'file:/scratch/yunju/PhoJAna428_2011A/CMSSW_4_2_8/src/48FA4B21-DA7F-E011-8903-003048CFB40C.root'
 
     )
 )
@@ -96,9 +97,9 @@ process.photonjetana.YJJetProducerPY = cms.InputTag("selectedPatJetsAK5PF")
 
 
 process.p = cms.Path(
-                      process.fjSequence14*
+                      #process.fjSequence14*
                       process.fjSequence25*
-                      process.fjSequence30*
+                     # process.fjSequence30*
                       process.fjSequence44*
                       process.patDefaultSequence *
                       process.photonjetana)

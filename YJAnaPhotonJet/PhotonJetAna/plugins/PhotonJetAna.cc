@@ -13,7 +13,7 @@
 //
 // Original Author:  Yun-Ju Lu,27 2-004,+41227676186,
 //         Created:  Fri Jul  8 15:56:55 CEST 2011
-// $Id: PhotonJetAna.cc,v 1.3 2011/07/14 14:56:51 yunju Exp $
+// $Id: PhotonJetAna.cc,v 1.4 2011/07/19 16:52:45 yunju Exp $
 //
 //
 
@@ -108,6 +108,11 @@ PhotonJetAna::PhotonJetAna(const edm::ParameterSet& ps)
    tree_->Branch("vertexNTrk", vertexNTrk_, "vertexNTrk[nVtxNotFake]/F");
    tree_->Branch("vertexNTrkWeight05", vertexNTrkWeight05_, "vertexNTrkWeight05[nVtxNotFake]/F");
 
+   //MC trues
+   tree_->Branch("pthat",&pthat_,"pthat/F");
+   tree_->Branch("weight",&weight_,"weight/F");
+
+
    //Jets
 /*
    tree_->Branch("nJet", &nJet_, "nJet/I");
@@ -161,6 +166,8 @@ PhotonJetAna::PhotonJetAna(const edm::ParameterSet& ps)
      tree_->Branch("PatJetNEF", PatJetNEF_, "PatJetNEF[nPatJet]/F");
      tree_->Branch("PatJetNCH", PatJetNCH_, "PatJetNCH[nPatJet]/I");
      tree_->Branch("PatJetPartonID", PatJetPartonID_, "PatJetPartonID[nPatJet]/I");
+     tree_->Branch("PatJetNConstituents", PatJetNConstituents_, "PatJetNConstituents[nPatJet]/I");
+
 
      tree_->Branch("PatJetGenJetIndex", PatJetGenJetIndex_, "PatJetGenJetIndex[nPatJet]/I");
      tree_->Branch("PatJetGenJetEn", PatJetGenJetEn_, "PatJetGenJetEn[nPatJet]/F");
@@ -314,10 +321,11 @@ PhotonJetAna::~PhotonJetAna()
 void
 PhotonJetAna::analyze(const edm::Event& e, const edm::EventSetup& iSetup)
 {
-
-     
+   
+   cout<<" Start Ana"<<endl;    
    using namespace edm;
    hEvents_->Fill(0.5);
+   isMC_=! (e.isRealData());   
    storeGeneral(e);
    storeVertex(e);
   // storeJets(e);
@@ -332,38 +340,52 @@ PhotonJetAna::analyze(const edm::Event& e, const edm::EventSetup& iSetup)
 
 void PhotonJetAna::storeGeneral(const edm::Event& e)
 {
+   //cout<<" Start  General Ana"<<endl;
    run_    = e.id().run();
    event_  = e.id().event();
    orbit_  = e.orbitNumber();
    bx_     = e.bunchCrossing();
    lumis_  = e.luminosityBlock();
    isData_ = e.isRealData();
+   if (isMC_)
+   {
+      edm::Handle<GenEventInfoProduct>    genEventScale;
+      e.getByLabel("generator", genEventScale);
+      if( genEventScale->hasBinningValues() ) {
+      pthat_ = genEventScale->binningValues()[0];
+      weight_ = genEventScale->weight();
+      } 
+    
 
+   }
 
 }
 
 void PhotonJetAna::YJstoreJets(const edm::Event& e)
 {
+   //cout<<" Start  Jet Ana"<<endl;
+
    Handle<View<pat::Jet> > colojets;
    e.getByLabel(YJJetProducerC,colojets);
-
+    //cout<<"Where2"<<endl;   
  
    nPatJet_ = 0;
    for (View<pat::Jet>::const_iterator iJet = colojets->begin(); iJet != colojets->end(); ++iJet) 
    {
      //cout<<"OK?"<<endl;
-
+      if (iJet->pt() < 15) continue;
+     
       PatJetEn_[nPatJet_]     = iJet->energy();
       PatJetPt_[nPatJet_]     = iJet->pt();
       PatJetEta_[nPatJet_]    = iJet->eta();
       PatJetPhi_[nPatJet_]    = iJet->phi();
       PatJetCharge_[nPatJet_] = iJet->jetCharge();
       PatJetEt_[nPatJet_]     = iJet->et();
-     //  cout<<"OK2?"<<endl;
-/*
+
+
       PatJetRawPt_[nPatJet_]  = (*iJet).correctedJet("Uncorrected").pt();
       PatJetRawEn_[nPatJet_]  = (*iJet).correctedJet("Uncorrected").energy();
-*/
+
 
 
       PatJetCEF_[nPatJet_]    = iJet->chargedEmEnergyFraction();
@@ -373,6 +395,19 @@ void PhotonJetAna::YJstoreJets(const edm::Event& e)
       PatJetNHF_[nPatJet_]    = iJet->neutralHadronEnergyFraction();
       PatJetNCH_[nPatJet_]    = iJet->chargedMultiplicity();
       PatJetPartonID_[nPatJet_] = iJet->partonFlavour();
+     
+
+
+ PatJetNConstituents_[nPatJet_] = iJet->getPFConstituents().size();
+
+
+//      cout<<" isMC_patjet "<<isMC_<<endl;
+
+
+      if(isMC_)
+      {
+  //    cout<<" RunPatJet MC"<<endl;
+   
  
       edm::Handle<std::vector<reco::GenParticle> > genParticlesHandle; 
       e.getByLabel(genParticlesProducerC,genParticlesHandle);
@@ -402,10 +437,10 @@ void PhotonJetAna::YJstoreJets(const edm::Event& e)
 
       }
        
-
-
+      }//isMC_
      nPatJet_++;
    }
+//cout<<" End  Jet Ana"<<endl;
 
 
 /*      
@@ -556,7 +591,8 @@ void PhotonJetAna::storeVertex(const edm::Event& e){
 	///////////////////////////////////////////////////////////////////////
 	// Vertex Section: store BeamSpot and Primary Vertex of the event    //
 	///////////////////////////////////////////////////////////////////////
-  nVtxNotFake_ = 0;
+i//cout<<" Start  Vtx Ana"<<endl;
+   nVtxNotFake_ = 0;
 	
 //  cout <<" start storeVertex "<<endl;
   findGoodVtx          = false;
@@ -668,7 +704,7 @@ int PhotonJetAna::selectStorePhotons(const edm::Event& e,const edm::EventSetup& 
 // int MultiPhotonAnalyzer::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup,PhotonCollection & myphotons, const char* prefx){
 int PhotonJetAna::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup,PhotonCollection &myphotons){
    
-    
+  // cout<<" Start  Stor Pho Ana"<<endl;  
 
   // Tools to get cluster shapes
 
@@ -788,10 +824,10 @@ int PhotonJetAna::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup
 	    outOfTimeChi2 = it->outOfTimeChi2();
 	    chi2 = it->chi2();
 	    flags = it->recoFlag();
-	    severity = EcalSeverityLevelAlgo::severityLevel( id, rechits, *chStatus );
+	   // severity = EcalSeverityLevelAlgo::severityLevel( id, rechits, *chStatus );
 	    seedAppEt = (id.subdetId() == EcalBarrel)?
 	      it->energy()/ cosh( EBDetId::approxEta( id ) ):0;
-	    E2E9 = EcalSeverityLevelAlgo::E2overE9( id, rechits, 5.0, 0.0);
+	    //E2E9 = EcalSeverityLevelAlgo::E2overE9( id, rechits, 5.0, 0.0);
     }
 /*
     float tlef = -999., tright=-999., ttop=-999., tbottom=-999.;
@@ -898,7 +934,7 @@ int PhotonJetAna::storePhotons(const edm::Event& e,const edm::EventSetup& iSetup
     //hasConversionTracks[nPho_]   =  photon.hasConversionTracks();
     PhohasPixelSeed_[nPho_]   =  photon.hasPixelSeed();
         
-
+ //     cout<<" isMC_pho "<<isMC_<<endl;
       if (isMC_) {
 
       edm::Handle<reco::GenParticleCollection> genParticles;

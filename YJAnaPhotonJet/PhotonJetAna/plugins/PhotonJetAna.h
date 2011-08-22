@@ -169,7 +169,7 @@ class PhotonJetAna : public edm::EDAnalyzer {
       double hadEmMaxC;
       bool         muInGenCaloIso_; 
 
- bool isMC_;
+      bool isMC_;
 
 
       Bool_t doGenParticles_;
@@ -177,7 +177,7 @@ class PhotonJetAna : public edm::EDAnalyzer {
  
       
       TTree    *tree_;
-      
+      TH1F  *hEvents_; 
       //general 
       Int_t    run_;
       Int_t    event_;
@@ -206,7 +206,9 @@ class PhotonJetAna : public edm::EDAnalyzer {
       Int_t    vertexNTrk_[50];
       Int_t    vertexNTrkWeight05_[50];
 
-
+      //MC trues
+      Float_t  pthat_;
+      Float_t  weight_;
       //Jet
 
       Int_t    nJet_;
@@ -262,6 +264,8 @@ class PhotonJetAna : public edm::EDAnalyzer {
       Float_t  PatJetNEF_[maxP];
       Int_t    PatJetNCH_[maxP];
       Int_t    PatJetPartonID_[maxP];
+      Int_t    PatJetNConstituents_[maxP];
+
 
       Int_t    PatJetGenJetIndex_[maxP];
       Float_t  PatJetGenJetEn_[maxP];
@@ -312,6 +316,7 @@ class PhotonJetAna : public edm::EDAnalyzer {
       Float_t  PhoSigmaIetaIeta_[maxP];
       Float_t  PhoSigmaIphiIphi_[maxP];
       Float_t  PhoSeedTime_[maxP];
+      Int_t    PhoseedSeverity_[maxP]; 
       Float_t  PhoE2overe9_[maxP];
       Float_t  PhohadronicOverEm_[maxP];
       Float_t  PhoecalRecHitSumEtConeDR04_[maxP];
