@@ -102,7 +102,7 @@ eventInfo::Fill(const edm::Event& iEvent){
          for(ittrk = vert->tracks_begin(); ittrk!= vert->tracks_end(); ++ittrk)
            if ( vert->trackWeight(*ittrk) > 0.5 ) vtxNTrkWeight05++;
            
-          std::cout<<"check vertex"<<vert->position().X()<<std::endl; 
+          //std::cout<<"check vertex"<<vert->position().X()<<std::endl; 
           vertexX_.push_back(vert->position().X());
           vertexY_.push_back(vert->position().Y());
           vertexZ_.push_back(vert->position().Z());
