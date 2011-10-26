@@ -86,7 +86,7 @@ baseJetSel = cms.PSet(
 process.demo = cms.EDAnalyzer('TreeMaker',
    
    fillEventInfo_ = cms.bool(True),
-   fillGenInfo_   = cms.bool(False),
+   fillGenInfo_   = cms.bool(True),
    fillMuonInfo_  = cms.bool(False),
    fillElecInfo_  = cms.bool(False),
    fillJetInfo_   = cms.bool(True),
