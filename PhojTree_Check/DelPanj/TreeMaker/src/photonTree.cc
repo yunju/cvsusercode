@@ -80,10 +80,10 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
     photonEta_.push_back(photon.p4().eta());
     photonPhi_.push_back(photon.p4().phi());
     photonEt_.push_back(photon.et()); 
-    photonEnergy_.push_back(photon.px());
-    photonPx_.push_back(photon.py());
-    photonPy_.push_back(photon.pz());
-    photonPz_.push_back(photon.p4().pt());
+    photonEnergy_.push_back(photon.energy());
+    photonPx_.push_back(photon.px());
+    photonPy_.push_back(photon.py());
+    photonPz_.push_back(photon.pz());
     photonR9_.push_back(photon.r9());
     photonPhiWidth_.push_back(photon.superCluster()->phiWidth());
     photonEtaWidth_.push_back(photon.superCluster()->etaWidth());
