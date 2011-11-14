@@ -2,7 +2,7 @@
 //
 // Original Author:  Anil Pratap Singh,32 2-C17,+41227676591,
 //         Created:  Sat Sep 10 18:46:42 CEST 2011
-// $Id: ZeeFilter.cc,v 1.4 2011/09/17 01:16:47 lovedeep Exp $
+// $Id: PhotonDataFilter.cc,v 1.1 2011/10/09 23:08:46 yunju Exp $
 //
 //
 
@@ -77,9 +77,9 @@
         ptMinC                = iConfig.getUntrackedParameter<double>("GammaPtMin", 40);
         etaMaxC               = iConfig.getUntrackedParameter<double>("GammaEtaMax",2.5);
         hadEmMaxC             = iConfig.getUntrackedParameter<double>("GammaHadEmMax",0.05);
-        phoTrkIsoMaxC         = iConfig.getUntrackedParameter<double>("GammaTisoMax",5);
-        phoEBSieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEBSieieMax",0.0112);
-        phoEESieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEESieieMax",0.042); 
+        phoTrkIsoMaxC         = iConfig.getUntrackedParameter<double>("GammaTisoMax",20);
+        phoEBSieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEBSieieMax",0.024);
+        phoEESieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEESieieMax",0.1); 
         Npcrosess =0;
         Npass =0;
    } 
