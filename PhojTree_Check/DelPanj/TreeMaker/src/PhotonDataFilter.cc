@@ -2,7 +2,7 @@
 //
 // Original Author:  Anil Pratap Singh,32 2-C17,+41227676591,
 //         Created:  Sat Sep 10 18:46:42 CEST 2011
-// $Id: PhotonDataFilter.cc,v 1.1 2011/10/09 23:08:46 yunju Exp $
+// $Id: PhotonDataFilter.cc,v 1.2 2011/11/14 20:33:25 yunju Exp $
 //
 //
 
@@ -72,14 +72,14 @@
    {
         photonLabel_          = iConfig.getParameter<edm::InputTag> ("photonLabel");
         JetLabel_             = iConfig.getParameter<edm::InputTag> ("jetLabel"); 
-        JetetaMaxC            = iConfig.getUntrackedParameter<double>("JetetaMax",5 );
-        ptJetMinC             = iConfig.getUntrackedParameter<double>("JetPtMin", 20);
-        ptMinC                = iConfig.getUntrackedParameter<double>("GammaPtMin", 40);
+        JetetaMaxC            = iConfig.getUntrackedParameter<double>("JetetaMax",5.0 );
+        ptJetMinC             = iConfig.getUntrackedParameter<double>("JetPtMin", 25);
+        ptMinC                = iConfig.getUntrackedParameter<double>("GammaPtMin", 75);
         etaMaxC               = iConfig.getUntrackedParameter<double>("GammaEtaMax",2.5);
         hadEmMaxC             = iConfig.getUntrackedParameter<double>("GammaHadEmMax",0.05);
         phoTrkIsoMaxC         = iConfig.getUntrackedParameter<double>("GammaTisoMax",20);
         phoEBSieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEBSieieMax",0.024);
-        phoEESieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEESieieMax",0.1); 
+        phoEESieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEESieieMax",0.05); 
         Npcrosess =0;
         Npass =0;
    } 
