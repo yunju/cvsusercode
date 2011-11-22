@@ -9,7 +9,11 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load('Configuration.StandardSequences.Reconstruction_cff')
 
 # for 2011 42  data
-process.GlobalTag.globaltag = cms.string('GR_R_42_V12::All')
+#process.GlobalTag.globaltag = cms.string('GR_R_42_V12::All')
+# for 2011 42  mc
+process.GlobalTag.globaltag = cms.string('START42_V12::All')
+
+
 
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
@@ -65,7 +69,7 @@ addJetCollection(process,
                   doJetID      = False
                   )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(500) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(50) )
 
 process.source = cms.Source("PoolSource",
    # replace 'myfile.root' with the source file you want to use
@@ -74,7 +78,8 @@ process.source = cms.Source("PoolSource",
      #$inputFileNames
      #'file:/hdfs/store/user/kaur/DYJetsToLL_TuneZ2_M-50_7TeV-madgraph-tauolaSummer11-PU_S4_START42_V11-v1_DelPanj_Jul29-Electrons_PF2PAT_onMC/Electrons_PF2PAT_onMC-002FE237-B09C-E011-B7B1-0022199305B1.root'
       #'file:/castor/cern.ch/user/a/anil/patTupleZee_PF2PAT.root'
-      'file:/scratch/yunju/PhoJAna428_2011A/CMSSW_4_2_8/src/48FA4B21-DA7F-E011-8903-003048CFB40C.root'
+      #'file:/scratch/yunju/PhoJAna428_2011A/CMSSW_4_2_8/src/48FA4B21-DA7F-E011-8903-003048CFB40C.root'
+      'file:/data4/yunju/Validation/QCD_Pt-120to170_TuneZ2_7TeV_pythia6-AODSIM-PU_S4_START42_V11-v.root'
    )
 )
 #process.load("DelPanj.TreeMaker.patTuples_ZmmMadgraph_cfi")

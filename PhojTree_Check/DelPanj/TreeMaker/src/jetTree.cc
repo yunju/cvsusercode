@@ -108,7 +108,8 @@ jetTree::Fill(const edm::Event& iEvent){
       JetNeutHadEFr_.push_back(jet->neutralHadronEnergyFraction ());
       JetCharEmEFr_.push_back(jet->chargedEmEnergyFraction ());
       JetCharMuEFr_.push_back(jet->chargedMuEnergyFraction ());
-    }
+      JetNConstituents_.push_back(jet->getPFConstituents().size()); 
+   }
     
     if(jet->isCaloJet()){
       JetN60_.push_back(jet->n60());
@@ -175,9 +176,11 @@ jetTree::SetBranches(){
     AddBranch(&JetNeutHadEFr_, "NeutHadEFr_");
     AddBranch(&JetCharEmEFr_, "CharEmEFr_");
     AddBranch(&JetCharMuEFr_, "CharMuEFr_");
+    AddBranch(&JetNConstituents_, "JetNConstituents_");
   //}
   //Add CaloSpecific Branches
   //if(storeCalo_){
+/*
     AddBranch(&JetN60_,      "N60_");
     AddBranch(&JetN90_,      "N90_");
     AddBranch(&JetEmFr_,     "EmFr_");
@@ -199,7 +202,8 @@ jetTree::SetBranches(){
     AddBranch(&JetHadHfFr_,  "HadHfFr_");
     AddBranch(&JetHadHoFr_,  "HadHoFr_");
     //AddBranch(&JetHadHoFr_,"HadHoFr_");
-  //}
+ */ 
+ //}
 }
 
 
@@ -267,4 +271,5 @@ jetTree::Clear(){
   JetHadHeFr_.clear();
   JetHadHfFr_.clear();
   JetHadHoFr_.clear();
+  JetNConstituents_.clear();
 }

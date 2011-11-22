@@ -96,35 +96,57 @@ genInfoTree::Fill(const edm::Event& iEvent)
      }
    }
 */
-   edm::Handle<reco::GenJetCollection> genJetsHandle;
-   if( not iEvent.getByLabel("iterativeCone5GenJets",genJetsHandle)){ 
+
+  edm::Handle<edm::View<pat::Jet> > JetsHandle; 
+ 
+  if( not iEvent.getByLabel("selectedPatJetsAK5PF",JetsHandle)){ 
      edm::LogInfo("GenAnalyzer") << "genJets not found, "
-       "skipping event"; 
+       "skipping event";
+         std::cout<<"FATAL EXCEPTION(photon tree  jet info (No selectedPatJetsAK5PF)): "<<std::endl; 
      return;
    }
-   const reco::GenJetCollection* genJetColl = &(*genJetsHandle);
-   reco::GenJetCollection::const_iterator gjeti = genJetColl->begin();
-   
-   for(; gjeti!=genJetColl->end();gjeti++){
-     reco::GenParticle gjet = *gjeti;
-     genJetPx_.push_back(gjet.px());
-     genJetPy_.push_back(gjet.py()); 
-     genJetPz_.push_back(gjet.pz()); 
-     genJetE_.push_back(gjet.energy()); 
-     genJetP_.push_back(gjet.p()); 
-     genJetPt_.push_back(gjet.pt());
-     genJetEta_.push_back(gjet.eta());
-     genJetPhi_.push_back(gjet.phi());
-     genJetTheta_.push_back(gjet.theta());
-     genJetEt_.push_back(gjet.et());
+
+//   edm::Handle<reco::GenJetCollection> genJetsHandle;
+  
+  edm::Handle<std::vector<reco::GenParticle> >  genJetsHandle;
+  if( not iEvent.getByLabel("genParticles",genJetsHandle)){ 
+     edm::LogInfo("GenAnalyzer") << "genJets not found, "
+       "skipping event";
+         std::cout<<"FATAL EXCEPTION(photon tree gen jet info (No GenParticle)): "<<std::endl; 
+     return;
    }
-   
+
+   if (JetsHandle.isValid()&&genJetsHandle.isValid())
+   {
+      for (View<pat::Jet>::const_iterator gjet = JetsHandle->begin(); gjet != JetsHandle->end(); ++gjet) {
+      if (!(*gjet).genJet()) continue;
+      if ((*gjet).genJet()->pt() < 20) continue;
+     
+ 
+      genJetPx_.push_back((*gjet).genJet()->px());
+      genJetPy_.push_back((*gjet).genJet()->py()); 
+      genJetPz_.push_back((*gjet).genJet()->pz()); 
+      genJetE_.push_back((*gjet).genJet()->energy()); 
+      genJetP_.push_back((*gjet).genJet()->pt()); 
+      genJetPt_.push_back((*gjet).genJet()->pt());
+      genJetEta_.push_back((*gjet).genJet()->eta());
+      genJetPhi_.push_back((*gjet).genJet()->phi());
+      genJetTheta_.push_back((*gjet).genJet()->theta());
+      genJetEt_.push_back((*gjet).genJet()->et());
+
+       
+
+     }
+
+   }
+ 
 }
 
 
 
 void  
 genInfoTree::SetBranches(){
+/*
   AddBranch(&genParPx_, "genParPx_");
   AddBranch(&genParPy_,"genParPy_");
   AddBranch(&genParPz_,"genParPz_");
@@ -138,6 +160,7 @@ genInfoTree::SetBranches(){
   AddBranch(&genParQ_,"genParQ_");
   AddBranch(&genParId_,"genParId_");
   AddBranch(&genParSt_,"genParSt_");
+ */ 
   AddBranch(&genJetPx_, "genJetPx_");
   AddBranch(&genJetPy_,"genJetPy_");
   AddBranch(&genJetPz_,"genJetPz_");

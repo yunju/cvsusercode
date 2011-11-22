@@ -110,7 +110,7 @@ class jetTree  : public baseTree{
   std::vector<double> JetHadHeFr_ ;
   std::vector<double> JetHadHfFr_ ;
   std::vector<double> JetHadHoFr_ ;
-
+  std::vector<double> JetNConstituents_ ; 
 
 
 };
