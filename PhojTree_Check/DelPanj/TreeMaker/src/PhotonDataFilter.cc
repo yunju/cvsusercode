@@ -2,7 +2,7 @@
 //
 // Original Author:  Anil Pratap Singh,32 2-C17,+41227676591,
 //         Created:  Sat Sep 10 18:46:42 CEST 2011
-// $Id: PhotonDataFilter.cc,v 1.2 2011/11/14 20:33:25 yunju Exp $
+// $Id: PhotonDataFilter.cc,v 1.3 2011/11/15 13:03:24 yunju Exp $
 //
 //
 
@@ -126,7 +126,7 @@
           pat::Photon photon = pat::Photon(*ph);
           if(photon.pt()< ptMinC ) continue;
           if(fabs(photon.p4().eta())<1.56 && fabs(photon.p4().eta())>1.45  ) continue;
-          if(photon.hadronicOverEm()< hadEmMaxC) continue;
+          if(photon.hadronicOverEm()> hadEmMaxC) continue;
           if(fabs(photon.p4().eta()) > etaMaxC) continue;
           if(photon.trkSumPtHollowConeDR04() > phoTrkIsoMaxC) continue;
           if(fabs(photon.p4().eta())<1.45&&photon.sigmaIetaIeta() > phoEBSieieMaxC ) continue;         
