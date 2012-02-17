@@ -94,8 +94,8 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
     
     
     photonSigmaIetaIeta_.push_back(photon.sigmaIetaIeta());
-
-
+    //if(photon.pt()>75&&fabs(photon.p4().eta())<2.5&&photon.hadronicOverEm()<0.05)
+   // cout<<"Tree test "<<photon.pt() <<" "<<photon.p4().eta() <<photon.sigmaIetaIeta()<<" "<< photon.ecalRecHitSumEtConeDR04()<<" "<<photon.hcalTowerSumEtConeDR04()<<" "<<photon.trkSumPtHollowConeDR04()<<" "<<photon.hasPixelSeed()<<" "<<photon.hadronicOverEm()<<endl;
     // Cluster shape variables
 
     const reco::CaloClusterPtr  seed = photon.superCluster()->seed();
@@ -161,7 +161,10 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
       Float_t currentMaxPt(-1);
      // cout<<PhoisGenMatched_[nPho_]<<endl; 
       bool PhoGenMatched = false ; // intiialize GenMatch
-    //  cout<<PhoisGenMatched_[nPho_]<<endl; 
+      int  ThePhogenMomId= -9999;
+      int  ThePhogenNSiblings =-9999;
+      int  ThegenGrandMomId =-9999;  
+      //  cout<<PhoisGenMatched_[nPho_]<<endl; 
       for (reco::GenParticleCollection::const_iterator it_gen = 
 	     genParticles->begin(); it_gen!= genParticles->end(); it_gen++){   
       
@@ -169,11 +172,11 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
 	const reco::Candidate &p = (*it_gen);    
 	if (p.status() != 1 || (p.pdgId()) != pdgId_ ) continue;      
 	if(ROOT::Math::VectorUtil::DeltaR(p.p4(),ph->p4())<delta && p.pt() > currentMaxPt ) {
-	  if( p.numberOfMothers() > 0 ) {
-	    PhogenMomId_.push_back(p.mother()->pdgId()); 
-	    PhogenNSiblings_.push_back(p.mother()->numberOfDaughters()) ;
-	    if( p.mother()->numberOfMothers() > 0 ) { 
-	      PhogenGrandMomId_.push_back( p.mother()->mother()->pdgId());
+	   if( p.numberOfMothers() == 1 ) {
+	    ThePhogenMomId=p.mother()->pdgId();
+            ThePhogenNSiblings =p.mother()->numberOfDaughters();
+	    if( p.mother()->numberOfMothers() ==1 ) { 
+              ThegenGrandMomId =p.mother()->mother()->pdgId();
 	    }
 	  }
 	  PhoGenMatched  = true; cndMc = &p;
@@ -182,7 +185,6 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
 	}
       }//gen loop      
 	
-     PhoisGenMatched_.push_back(PhoGenMatched);	
       // if no matching photon was found try with other particles
       if( ! PhoGenMatched ) {
 
@@ -193,10 +195,11 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
 
 	  if (p.status() != 1 || find(otherPdgIds_.begin(),otherPdgIds_.end(),fabs(p.pdgId())) == otherPdgIds_.end() ) continue;      	
 	  if(ROOT::Math::VectorUtil::DeltaR(p.p4(),ph->p4())<delta && p.pt() > currentMaxPt ) {
-	    PhogenMomId_.push_back(p.mother()->pdgId());	
-	    if( p.numberOfMothers() > 0 ) {
-	      PhogenMomId_.push_back(p.mother()->pdgId()); 
-	      PhogenNSiblings_.push_back(p.mother()->numberOfDaughters()) ;
+ 
+	     if( p.numberOfMothers() ==1 ) {
+
+              ThePhogenMomId=p.mother()->pdgId();
+              ThePhogenNSiblings =p.mother()->numberOfDaughters();
 	    }
 	    cndMc = &p; // do not set the isGenMatched in this case
             currentMaxPt = p.pt();
@@ -205,6 +208,10 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
 	
 	} // end of loop over gen particles
       } // if not matched to gen photon
+      PhoisGenMatched_.push_back(PhoGenMatched);	
+      PhogenMomId_.push_back(ThePhogenMomId); 
+      PhogenNSiblings_.push_back(ThePhogenNSiblings) ;
+      PhogenGrandMomId_.push_back(ThegenGrandMomId);
      
       if(cndMc) {
 //	PhogenMatchedP4_ [nPho_]  = TLorentzVector(cndMc->px(),cndMc->py(),cndMc->pz(),cndMc->energy());
@@ -223,6 +230,11 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
 	PhogenCalIsoDR04_.push_back( getGenCalIso(genParticles,matchedPart,0.4,muInGenCaloIso_));
 	PhogenTrkIsoDR04_.push_back( getGenTrkIso(genParticles,matchedPart,0.4));
       }
+
+
+
+
+
 
     } // if it's a MC
   }  

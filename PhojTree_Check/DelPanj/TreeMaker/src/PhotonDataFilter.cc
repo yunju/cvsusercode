@@ -2,7 +2,7 @@
 //
 // Original Author:  Anil Pratap Singh,32 2-C17,+41227676591,
 //         Created:  Sat Sep 10 18:46:42 CEST 2011
-// $Id: PhotonDataFilter.cc,v 1.3 2011/11/15 13:03:24 yunju Exp $
+// $Id: PhotonDataFilter.cc,v 1.4 2012/02/04 04:24:49 yunju Exp $
 //
 //
 
@@ -74,10 +74,10 @@
         JetLabel_             = iConfig.getParameter<edm::InputTag> ("jetLabel"); 
         JetetaMaxC            = iConfig.getUntrackedParameter<double>("JetetaMax",5.0 );
         ptJetMinC             = iConfig.getUntrackedParameter<double>("JetPtMin", 25);
-        ptMinC                = iConfig.getUntrackedParameter<double>("GammaPtMin", 75);
+        ptMinC                = iConfig.getUntrackedParameter<double>("GammaPtMin", 40);
         etaMaxC               = iConfig.getUntrackedParameter<double>("GammaEtaMax",2.5);
         hadEmMaxC             = iConfig.getUntrackedParameter<double>("GammaHadEmMax",0.05);
-        phoTrkIsoMaxC         = iConfig.getUntrackedParameter<double>("GammaTisoMax",20);
+        phoTrkIsoMaxC         = iConfig.getUntrackedParameter<double>("GammaTisoMax",2);
         phoEBSieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEBSieieMax",0.024);
         phoEESieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEESieieMax",0.05); 
         Npcrosess =0;
@@ -128,7 +128,7 @@
           if(fabs(photon.p4().eta())<1.56 && fabs(photon.p4().eta())>1.45  ) continue;
           if(photon.hadronicOverEm()> hadEmMaxC) continue;
           if(fabs(photon.p4().eta()) > etaMaxC) continue;
-          if(photon.trkSumPtHollowConeDR04() > phoTrkIsoMaxC) continue;
+          if(photon.trkSumPtHollowConeDR04()-0.001*photon.pt() > phoTrkIsoMaxC) continue;
           if(fabs(photon.p4().eta())<1.45&&photon.sigmaIetaIeta() > phoEBSieieMaxC ) continue;         
           if(fabs(photon.p4().eta())<2.5 && fabs(photon.p4().eta())>1.56 && photon.sigmaIetaIeta() > phoEESieieMaxC ) continue;
           
