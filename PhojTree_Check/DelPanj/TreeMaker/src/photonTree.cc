@@ -231,6 +231,23 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
 	PhogenTrkIsoDR04_.push_back( getGenTrkIso(genParticles,matchedPart,0.4));
       }
 
+      else {
+//	PhogenMatchedP4_ [nPho_]  = TLorentzVector(cndMc->px(),cndMc->py(),cndMc->pz(),cndMc->energy());
+	PhogenMatchedE_ .push_back(-999);
+        PhogenMatchedPx_.push_back(-999);
+        PhogenMatchedPy_ .push_back(-999);
+        PhogenMatchedPz_.push_back(-999);
+        PhogenMatchedPt_.push_back(-999);
+	PhogenMatchedEta_.push_back(-999);
+	PhogenMatchedPhi_.push_back(-999);
+	
+//	genIsoDR03_[nPho_]   = getGenCalIso(genParticles,matchedPart,0.3,true,true);
+//	genCalIsoDR03_[nPho_]= getGenCalIso(genParticles,matchedPart,0.3,muInGenCaloIso_);
+//	genTrkIsoDR03[nPho_]= getGenTrkIso(genParticles,matchedPart,0.3);
+	PhogenIsoDR04_ .push_back(-999);
+	PhogenCalIsoDR04_.push_back(-999);
+	PhogenTrkIsoDR04_.push_back(-999);
+      }
 
 
 
