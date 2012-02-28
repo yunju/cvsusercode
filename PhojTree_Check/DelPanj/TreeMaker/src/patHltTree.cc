@@ -54,7 +54,7 @@ patHltTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup,const HL
       bool changed(true);
       //std::cout<<" hlt "<<trigName <<" "<<hltPrescale<<"  "<<trigResult <<std::endl;
     //std::cin.get();
-      if (hltPrescale!=1||trigResult!=1) continue;
+      if (trigResult!=1) continue;
       trigName_.push_back(trigName);      
       trigResult_.push_back(trigResult);
       trigPrescale_.push_back(hltPrescale);
@@ -82,6 +82,7 @@ void
 patHltTree::Clear(){
   trigResult_.clear();
   trigName_.clear();
+  trigPrescale_.clear();
 }
 
 

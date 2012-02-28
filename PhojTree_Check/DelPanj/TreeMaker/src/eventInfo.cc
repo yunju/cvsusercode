@@ -27,6 +27,9 @@ eventInfo::~eventInfo(){
 
 void
 eventInfo::Fill(const edm::Event& iEvent){
+  Clear();  
+
+
   nEvt_   = iEvent.id().event();
   nRun_   = iEvent.id().run();
   nLumiS_ = iEvent.luminosityBlock();

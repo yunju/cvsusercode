@@ -2,7 +2,7 @@
 //
 // Original Author:  Anil Pratap Singh,32 2-C17,+41227676591,
 //         Created:  Sat Sep 10 18:46:42 CEST 2011
-// $Id: PhotonDataFilter.cc,v 1.4 2012/02/04 04:24:49 yunju Exp $
+// $Id: PhotonDataFilter.cc,v 1.5 2012/02/17 15:01:28 yunju Exp $
 //
 //
 
@@ -72,10 +72,10 @@
    {
         photonLabel_          = iConfig.getParameter<edm::InputTag> ("photonLabel");
         JetLabel_             = iConfig.getParameter<edm::InputTag> ("jetLabel"); 
-        JetetaMaxC            = iConfig.getUntrackedParameter<double>("JetetaMax",5.0 );
-        ptJetMinC             = iConfig.getUntrackedParameter<double>("JetPtMin", 25);
-        ptMinC                = iConfig.getUntrackedParameter<double>("GammaPtMin", 40);
-        etaMaxC               = iConfig.getUntrackedParameter<double>("GammaEtaMax",2.5);
+        JetetaMaxC            = iConfig.getUntrackedParameter<double>("JetetaMax",2.5 );
+        ptJetMinC             = iConfig.getUntrackedParameter<double>("JetPtMin", 30);
+        ptMinC                = iConfig.getParameter<double>("GammaPtMinPY");
+        etaMaxC               = iConfig.getParameter<double>("GammaEtaMaxPY");
         hadEmMaxC             = iConfig.getUntrackedParameter<double>("GammaHadEmMax",0.05);
         phoTrkIsoMaxC         = iConfig.getUntrackedParameter<double>("GammaTisoMax",2);
         phoEBSieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEBSieieMax",0.024);

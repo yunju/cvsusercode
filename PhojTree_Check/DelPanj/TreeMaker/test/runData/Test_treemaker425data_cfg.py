@@ -62,7 +62,7 @@ addJetCollection(process,
                   doJetID      = False
                   )
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(500) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1500) )
 
 process.source = cms.Source("PoolSource",
    # replace 'myfile.root' with the source file you want to use
@@ -120,10 +120,12 @@ process.zeefil.subLeadElecPset_.ptx= cms.double(20)
 
 from DelPanj.TreeMaker.photonFilter_cff import *
 process.photonfil = photonFilter
+process.photonfil.GammaPtMinPY =cms.double(85)
 
 from DelPanj.TreeMaker.photonDataFilter_cff import *
 process.photondatafil = photonDataFilter
-
+process.photondatafil.GammaPtMinPY =cms.double(40)
+process.photondatafil.GammaEtaMaxPY =cms.double(1.5)
 #process.p = cms.Path(process.zeefil*process.demo)
 process.p = cms.Path(
                      process.fjSequence25*
