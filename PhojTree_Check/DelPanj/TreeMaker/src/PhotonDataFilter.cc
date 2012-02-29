@@ -2,7 +2,7 @@
 //
 // Original Author:  Anil Pratap Singh,32 2-C17,+41227676591,
 //         Created:  Sat Sep 10 18:46:42 CEST 2011
-// $Id: PhotonDataFilter.cc,v 1.5 2012/02/17 15:01:28 yunju Exp $
+// $Id: PhotonDataFilter.cc,v 1.6 2012/02/28 07:11:59 yunju Exp $
 //
 //
 
@@ -77,7 +77,7 @@
         ptMinC                = iConfig.getParameter<double>("GammaPtMinPY");
         etaMaxC               = iConfig.getParameter<double>("GammaEtaMaxPY");
         hadEmMaxC             = iConfig.getUntrackedParameter<double>("GammaHadEmMax",0.05);
-        phoTrkIsoMaxC         = iConfig.getUntrackedParameter<double>("GammaTisoMax",2);
+        phoTrkIsoMaxC         = iConfig.getUntrackedParameter<double>("GammaTisoMax",7);
         phoEBSieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEBSieieMax",0.024);
         phoEESieieMaxC        = iConfig.getUntrackedParameter<double>("GammaEESieieMax",0.05); 
         Npcrosess =0;
