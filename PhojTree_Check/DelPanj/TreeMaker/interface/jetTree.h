@@ -22,6 +22,12 @@
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "DelPanj/TreeMaker/interface/utils.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/Framework/interface/ESHandle.h"
+#include "FWCore/Framework/interface/EventSetup.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectorParameters.h"
+#include "CondFormats/JetMETObjects/interface/JetCorrectionUncertainty.h"
+#include "JetMETCorrections/Objects/interface/JetCorrector.h"
+#include "JetMETCorrections/Objects/interface/JetCorrectionsRecord.h"
 #include "DelPanj/TreeMaker/interface/baseTree.h"
 
 using namespace std;
@@ -34,7 +40,7 @@ class jetTree  : public baseTree{
  public:
   jetTree(std::string name, TTree* tree, const edm::ParameterSet& cfg);//name=patJetAk05
   ~jetTree();
-  void Fill(const edm::Event& iEvent);
+  void Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup);
   void SetBranches();
   void Clear();
  
@@ -111,7 +117,8 @@ class jetTree  : public baseTree{
   std::vector<double> JetHadHfFr_ ;
   std::vector<double> JetHadHoFr_ ;
   std::vector<double> JetNConstituents_ ; 
-
+  double unc;
+  std::vector<double> JetJECUncert_;
 
 };
 

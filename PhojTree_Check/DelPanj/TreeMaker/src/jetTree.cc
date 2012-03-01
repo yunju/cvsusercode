@@ -18,7 +18,7 @@ jetTree::~jetTree(){
 
 
 void
-jetTree::Fill(const edm::Event& iEvent){
+jetTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
   Clear();
   
   edm::Handle<std::vector<pat::Jet> > JetHandle;
@@ -29,10 +29,25 @@ jetTree::Fill(const edm::Event& iEvent){
   const std::vector<pat::Jet>* jets = JetHandle.product();
   std::vector<pat::Jet>::const_iterator jet =jets->begin();
 
+  edm::ESHandle<JetCorrectorParametersCollection> JetCorParColl;
+  iSetup.get<JetCorrectionsRecord>().get("AK5PF",JetCorParColl);
+  JetCorrectorParameters const & JetCorPar = (*JetCorParColl)["Uncertainty"];
+  JetCorrectionUncertainty *jecUnc = new JetCorrectionUncertainty(JetCorPar);
+
+
   for(;jet!=jets->end();jet++){
     //add only save jet with pt >18 eta>3.2 
     if(jet->pt()<18) continue ;
     if(jet->eta()>3.2) continue;
+
+    //save jec
+
+    jecUnc->setJetEta(jet->eta());
+    jecUnc->setJetPt(jet->pt());                                                                                                                   
+    unc = jecUnc->getUncertainty(true);
+    JetJECUncert_.push_back(unc);
+
+
 
     //Stuff common for all jets.
     JetPt_.push_back(jet->pt());
@@ -177,7 +192,9 @@ jetTree::SetBranches(){
     AddBranch(&JetCharEmEFr_, "CharEmEFr_");
     AddBranch(&JetCharMuEFr_, "CharMuEFr_");
     AddBranch(&JetNConstituents_, "JetNConstituents_");
-  //}
+  
+    AddBranch(&JetJECUncert_,"JECUncert_");
+    //}
   //Add CaloSpecific Branches
   //if(storeCalo_){
 /*
@@ -272,4 +289,6 @@ jetTree::Clear(){
   JetHadHfFr_.clear();
   JetHadHoFr_.clear();
   JetNConstituents_.clear();
+
+  JetJECUncert_.clear();
 }

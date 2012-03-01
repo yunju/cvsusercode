@@ -68,7 +68,7 @@ TreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   if( fillGenInfo_)   genInfoTree_ ->Fill(iEvent);
   if( fillElecInfo_)  patElecTree_ ->Fill(iEvent);
   if( fillMuonInfo_)  patMuTree_   ->Fill(iEvent);
-  if( fillJetInfo_)   jetTree_     ->Fill(iEvent);
+  if( fillJetInfo_)   jetTree_     ->Fill(iEvent,iSetup);
   if( fillMetInfo_)   patMetTree_  ->Fill(iEvent);
   if( fillTrigInfo_)  patHltTree_  ->Fill(iEvent,iSetup,hltConfig_);
   if( fillPhotInfo_)  photonTree_  ->Fill(iEvent,iSetup);
