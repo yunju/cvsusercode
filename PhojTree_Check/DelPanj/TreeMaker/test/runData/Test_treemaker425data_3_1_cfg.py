@@ -120,7 +120,7 @@ process.zeefil.subLeadElecPset_.ptx= cms.double(20)
 
 from DelPanj.TreeMaker.photonFilter_cff import *
 process.photonfil = photonFilter
-process.photonfil.GammaPtMinPY =cms.double(85)
+process.photonfil.GammaPtMinPY =cms.double(40)
 
 from DelPanj.TreeMaker.photonDataFilter_cff import *
 process.photondatafil = photonDataFilter
