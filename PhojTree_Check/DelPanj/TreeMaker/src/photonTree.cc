@@ -136,9 +136,10 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
     photonESRatio_.push_back(ph->et());
    
     
-
+    
     if (isMC_) {
 
+      MCpthat_ = -9999;
       edm::Handle<reco::GenParticleCollection> genParticles;
       
       if(not iEvent.getByLabel(genParticlesProducerC,genParticles)){
@@ -146,15 +147,15 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
         exit(0);
       }  
       edm::Handle<GenEventInfoProduct>    genEventScale;
-      if(not iEvent.getByLabel("generator", genEventScale)){
-      std::cout<<"FATAL EXCEPTION(photon tree generator): "<<"Following Not Found: "<<"generator"<<std::endl;
-      exit(0);
+      //      if(not iEvent.getByLabel("generator", genEventScale)){
+      //      std::cout<<"FATAL EXCEPTION(photon tree generator): "<<"Following Not Found: "<<"generator"<<std::endl;
+      //      exit(0);
+      //      }
+      if (iEvent.getByLabel("generator", genEventScale)) {
+	if (genEventScale->hasBinningValues()) MCpthat_ = genEventScale->binningValues()[0];
       }
-      MCpthat_ = genEventScale->binningValues()[0];
     
-
       float delta(0.15);
-      
 
       const reco::Candidate *cndMc(0);
       reco::GenParticleCollection::const_iterator matchedPart;
