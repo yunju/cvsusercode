@@ -27,6 +27,16 @@ genInfoTree::AddBranch(std::vector<double>* vec, std::string name){
 
 }
 
+//---------------------------------------------------------------                                                                                                                                                                    
+//---------------------------------------------------------------
+void
+genInfoTree::AddBranch(int* x, std::string name){
+  std::string brName=name;
+  tree_->Branch(brName.c_str(),x);
+
+
+}
+
 //---------------------------------------------------------------
 //---------------------------------------------------------------
 void
@@ -140,6 +150,16 @@ genInfoTree::Fill(const edm::Event& iEvent)
 
    }
  
+   ////Get PileupInfo
+   edm::InputTag PileupSrc_("addPileupInfo");
+   edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
+   iEvent.getByLabel(PileupSrc_, PupInfo);
+   std::vector<PileupSummaryInfo>::const_iterator PVI;
+   for(PVI = PupInfo->begin(); PVI != PupInfo->end(); ++PVI) {
+     numOfPUInteractions_ = PVI->getPU_NumInteractions();
+     //trueNumOfInteractions_ = PVI->getTrueNumInteractions(); ////NOT YET AVAILABLE, BUT SHOULD BE USED TO RE-WEIGHT AS OF CMSSW_4_2_8 ON                                                                                              
+   }//end of PVI
+
 }
 
 
@@ -172,12 +192,14 @@ genInfoTree::SetBranches(){
   AddBranch(&genJetPhi_,"genJetPhi_");
   AddBranch(&genJetEt_,"genJetEt_"); 
   AddBranch(&genJetQ_,"genJetQ_");
-
+  AddBranch(&numOfPUInteractions_,"numOfPUInteractions_");
 }
 
 
 void  
 genInfoTree::Clear(){
+  numOfPUInteractions_ = -99999;
+
    genParPx_.clear();
    genParPy_.clear();
    genParPz_.clear();

@@ -21,6 +21,8 @@
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
+///////NEW, includes pileup information needed to re-weight samples                                                                                                                                                                     
+#include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 #include "TH1.h"
 #include "TFile.h"
 #include "TTree.h"
@@ -43,6 +45,7 @@ class genInfoTree{
   void AddBranch(double* x, std::string name);
   void AddBranch(std::vector<double>*, std::string name);
   void AddBranch(std::vector<int>*, std::string name);
+  void AddBranch(int* x, std::string name);
   
   edm::InputTag genPartLabel_;
   
@@ -74,6 +77,10 @@ class genInfoTree{
   std::vector<double> genJetPhi_; 
   std::vector<double> genJetEt_;
   std::vector<double> genJetQ_;
+
+  ///pileup                                                                                                                                                                                                                             
+  int numOfPUInteractions_;
+  float trueNumOfInteractions_;
 };
 
 #endif
