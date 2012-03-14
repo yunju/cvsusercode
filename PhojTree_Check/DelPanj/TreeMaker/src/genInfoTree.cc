@@ -109,10 +109,10 @@ genInfoTree::Fill(const edm::Event& iEvent)
 
   edm::Handle<edm::View<pat::Jet> > JetsHandle; 
  
-  if( not iEvent.getByLabel("selectedPatJetsAK5PF",JetsHandle)){ 
+  if( not iEvent.getByLabel("selectedPatJetsPFlow",JetsHandle)){  ///selectedPatJetsAK5PF",JetsHandle)){ 
      edm::LogInfo("GenAnalyzer") << "genJets not found, "
        "skipping event";
-         std::cout<<"FATAL EXCEPTION(photon tree  jet info (No selectedPatJetsAK5PF)): "<<std::endl; 
+         std::cout<<"FATAL EXCEPTION(photon tree  jet info (No selectedPatJetsPFlow)): "<<std::endl; 
      return;
    }
 
