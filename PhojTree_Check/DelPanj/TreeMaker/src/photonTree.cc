@@ -14,7 +14,7 @@ photonTree::photonTree(std::string name, TTree* tree, const pset& iConfig):baseT
   otherPdgIds_                     = iConfig.getUntrackedParameter<vector<int> >("OtherPdgIds", vector<int>(1,11) );
   muInGenCaloIso_                  = iConfig.getUntrackedParameter<int>("muInGenCaloIso", 10); 
   isMC_   = iConfig.getParameter<bool>("isMCPY");
-  rho25C           = iConfig.getParameter<InputTag>("rho25PY");  
+  //  rho25C           = iConfig.getParameter<InputTag>("rho25PY");  
   rho44C           = iConfig.getParameter<InputTag>("rho44PY");  
  
 
@@ -35,10 +35,10 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
  //  std::cout<<"isMC_"<<isMC_<<std::endl;
   
   //saveing fast jet rho correction
-    edm::Handle<double> rhoHandle25;
+  /*edm::Handle<double> rhoHandle25;
     iEvent.getByLabel(rho25C, rhoHandle25);
  
-    rho25_ = *(rhoHandle25.product()); 
+    rho25_ = *(rhoHandle25.product()); */
 
     edm::Handle<double> rhoHandle44;
     iEvent.getByLabel(rho44C, rhoHandle44);
@@ -260,7 +260,7 @@ void photonTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
 }
 
 void photonTree::SetBranches(){
-  AddBranch(&rho25_  ,"rho25");
+  //  AddBranch(&rho25_  ,"rho25");
   AddBranch(&rho44_ ,"rho44");
   AddBranch(&nPhoton_  ,"NumPh_");
   AddBranch(&photonPt_ ,"Pt");
