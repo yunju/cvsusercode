@@ -74,7 +74,7 @@ jetTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
      studying the JEC. And Not included in general
      runs of our code.
     */
-    std::string jecset = jet->currentJECSet();
+    /*std::string jecset = jet->currentJECSet();
     //std::cout<<"JEC Set is: "<<jecset<<std::endl;			 
     bool isAvailable = jet->jecSetAvailable("Uncorrected");
      if(isAvailable){
@@ -90,7 +90,7 @@ jetTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
     JetUnCorrPy_.push_back(py);
     JetUnCorrPz_.push_back(pz);
     JetUnCorrEnt_.push_back(en);
-
+    */
     if(jet->isPFJet()){
       
       JetPhotEn_.push_back(jet->photonEnergy());
@@ -114,7 +114,7 @@ jetTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
       JetHfHadMulti_.push_back(jet->HFHadronMultiplicity());
       JetHfEmMulti_.push_back(jet->HFEMMultiplicity());
      
-      JetPhotEnFr_.push_back(jet->photonEnergyFraction());
+      /*JetPhotEnFr_.push_back(jet->photonEnergyFraction());
       JetMuonEnFr_.push_back(jet->muonEnergyFraction());
       JetHfHadEnFr_.push_back(jet->HFHadronEnergyFraction());
       JetHfEmEnFr_.push_back(jet->HFEMEnergyFraction());
@@ -122,7 +122,7 @@ jetTree::Fill(const edm::Event& iEvent,const edm::EventSetup& iSetup){
       JetCharHadEFr_.push_back(jet->chargedHadronEnergyFraction ());
       JetNeutHadEFr_.push_back(jet->neutralHadronEnergyFraction ());
       JetCharEmEFr_.push_back(jet->chargedEmEnergyFraction ());
-      JetCharMuEFr_.push_back(jet->chargedMuEnergyFraction ());
+      JetCharMuEFr_.push_back(jet->chargedMuEnergyFraction ());*/
       JetNConstituents_.push_back(jet->getPFConstituents().size()); 
    }
     
