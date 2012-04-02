@@ -30,6 +30,11 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
     )
 
 process.load('RecoJets.Configuration.RecoPFJets_cff')
+
+process.kt6PFJets25 = process.kt6PFJets.clone( doRhoFastjet = True )
+process.kt6PFJets25.Rho_EtaMax = cms.double(2.5)
+process.fjSequence25 = cms.Sequence( process.kt6PFJets25 )
+
 process.patJetCorrFactors.rho = cms.InputTag('kt6PFJetsPFlow','rho')
 
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
@@ -85,7 +90,7 @@ process.demo = cms.EDAnalyzer('TreeMaker',
    beamSpotLabel=cms.InputTag("offlineBeamSpot"),
    VertexProducerPY  = cms.InputTag("offlinePrimaryVertices"),
    BeamSpotProducerPY =   cms.InputTag("offlineBeamSpot"),
-#   rho25PY = cms.InputTag("kt6PFJets25:rho"),
+   rho25PY = cms.InputTag("kt6PFJets25:rho"),
    rho44PY = cms.InputTag("kt6PFJetsPFlow:rho"), #kt6PFJets44:rho"),
    photonLabel =cms.InputTag("selectedPatPhotons"),
    reducedEcalRecHitsEBLabel =  cms.InputTag("reducedEcalRecHitsEB"),
@@ -110,7 +115,7 @@ process.photonfil.GammaPtMinPY=cms.double(40)
 
 # Add the KT6 producer to the sequence
 getattr(process,"patPF2PATSequence"+postfix).replace(
-    getattr(process,"pfNoElectron"+postfix), getattr(process,"pfNoElectron"+postfix) * process.kt6PFJetsPFlow
+    getattr(process,"pfNoElectron"+postfix), getattr(process,"pfNoElectron"+postfix) * process.kt6PFJets25 * process.kt6PFJetsPFlow
 )
 process.patseq = cms.Sequence(
     process.goodOfflinePrimaryVertices*
