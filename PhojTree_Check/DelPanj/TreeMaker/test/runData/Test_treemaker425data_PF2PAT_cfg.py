@@ -21,6 +21,8 @@ runOnData(process, ['All'], outputInProcess = False)
 
 #vertexing
 from PhysicsTools.PatAlgos.patTemplate_cfg import *
+del process.source
+
 from PhysicsTools.SelectorUtils.pvSelector_cfi import pvSelector
 
 # for 2011 42 data
@@ -35,9 +37,10 @@ process.goodOfflinePrimaryVertices = cms.EDFilter(
 process.load('RecoJets.Configuration.RecoPFJets_cff')
 process.patJetCorrFactors.rho = cms.InputTag('kt6PFJetsPFlow','rho')
 
-##process.kt6PFJets25 = process.kt6PFJets.clone( doRhoFastjet = True )
-##process.kt6PFJets25.Rho_EtaMax = cms.double(2.5)
-##process.fjSequence25 = cms.Sequence( process.kt6PFJets25 )
+process.kt6PFJets25 = process.kt6PFJets.clone( doRhoFastjet = True )
+process.kt6PFJets25.Rho_EtaMax = cms.double(2.5)
+process.fjSequence25 = cms.Sequence( process.kt6PFJets25 )
+
 ##process.kt6PFJets44 = process.kt6PFJets.clone( doRhoFastjet = True )
 ##process.kt6PFJets44.Rho_EtaMax = cms.double(4.4)
 ##process.kt6PFJets44.Ghost_EtaMax = cms.double(5.0)
@@ -98,7 +101,7 @@ process.demo = cms.EDAnalyzer('TreeMaker',
    beamSpotLabel=cms.InputTag("offlineBeamSpot"),
    VertexProducerPY  = cms.InputTag("offlinePrimaryVertices"),
    BeamSpotProducerPY =   cms.InputTag("offlineBeamSpot"),
-   #rho25PY = cms.InputTag("kt6PFJets25:rho"),
+   rho25PY = cms.InputTag("kt6PFJets25:rho"),
    rho44PY = cms.InputTag("kt6PFJetsPFlow:rho"), #44:rho"),
    photonLabel =cms.InputTag("selectedPatPhotons"),
    reducedEcalRecHitsEBLabel =  cms.InputTag("reducedEcalRecHitsEB"),
@@ -124,11 +127,11 @@ process.photonfil.GammaPtMinPY =cms.double(40)
 from DelPanj.TreeMaker.photonDataFilter_cff import *
 process.photondatafil = photonDataFilter
 process.photondatafil.GammaPtMinPY =cms.double(40)
-process.photondatafil.GammaEtaMaxPY =cms.double(1.5)
+process.photondatafil.GammaEtaMaxPY =cms.double(2.6)
 
 # Add the KT6 producer to the sequence
 getattr(process,"patPF2PATSequence"+postfix).replace(
-    getattr(process,"pfNoElectron"+postfix), getattr(process,"pfNoElectron"+postfix) * process.kt6PFJetsPFlow
+    getattr(process,"pfNoElectron"+postfix), getattr(process,"pfNoElectron"+postfix) * process.kt6PFJets25 * process.kt6PFJetsPFlow
     )
 process.patseq = cms.Sequence(
     process.goodOfflinePrimaryVertices*
