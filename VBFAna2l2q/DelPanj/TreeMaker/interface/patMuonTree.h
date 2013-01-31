@@ -19,7 +19,7 @@
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "DelPanj/TreeMaker/interface/utils.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
-
+#include "DelPanj/TreeMaker/interface/muSelector.h"
 using namespace std;
 using namespace edm;
 
@@ -43,10 +43,11 @@ class patMuonTree{
   void AddBranch(double* x, std::string name);
   void AddBranch(std::vector<double>*, std::string name);
   void AddBranch(std::vector<std::string>*, std::string name);
+  void AddBranch(std::vector<int>*, std::string name);
 
   edm::InputTag patMuonLabel_;
   edm::InputTag beamSpotLabel_;
-
+muSelector mu2012ID_;
 
   int Nmuons;
   std::vector<int> patMuonType;
@@ -103,6 +104,7 @@ class patMuonTree{
   std::vector<double> patMuonChHadSumPt05_;
   std::vector<double> patMuonNeHadSumPt05_;
   std::vector<double> patMuonGamSumPt05_;
+  std::vector<int> patMuonID_;
 
 };
 

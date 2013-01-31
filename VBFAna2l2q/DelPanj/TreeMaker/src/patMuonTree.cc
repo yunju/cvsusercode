@@ -1,9 +1,10 @@
 #include "DelPanj/TreeMaker/interface/patMuonTree.h"
 
-patMuonTree::patMuonTree(std::string name, TTree* tree, const edm::ParameterSet& iConfig){
+patMuonTree::patMuonTree(std::string name, TTree* tree, const edm::ParameterSet& iConfig): mu2012ID_ ( iConfig.getParameter<edm::ParameterSet>("mu2012IDSet")){
  tree_=tree; 
   patMuonLabel_ = iConfig.getParameter<edm::InputTag>("patMuonsPY");
   beamSpotLabel_ = iConfig.getParameter<edm::InputTag> ("beamSpotLabel");
+  
 SetBranches();
 }
 
@@ -51,6 +52,13 @@ Clear();
   pat::MuonCollection::const_iterator mu;
   
   for(mu=muColl.begin(); mu!=muColl.end(); mu++){
+
+  // const pat::Muon* myMuo
+ // = mu;
+  std::map<std::string, bool> Pass = mu2012ID_.CutRecord(*mu);
+  int passOrNot = PassAll(Pass);
+   //cout <<"passOrNot: "<<passOrNot<<endl;
+    patMuonID_.push_back(passOrNot);
 
     patMuonPt_.push_back(mu->pt());
     patMuonEta_.push_back(mu->eta());
@@ -133,6 +141,12 @@ Clear();
     
   }
 }
+void
+patMuonTree::AddBranch(std::vector<int>* vec, std::string name){
+  std::string brName=name;
+  tree_->Branch(brName.c_str(),vec);
+}
+
 
 
 void
@@ -203,6 +217,8 @@ AddBranch(&patMuonGamSumPt04_, "patMuonGamSumPt04_");
 AddBranch(&patMuonChHadSumPt05_, "patMuonChHadSumPt05_");
 AddBranch(&patMuonNeHadSumPt05_, "patMuonNeHadSumPt05_");
 AddBranch(&patMuonGamSumPt05_, "patMuonGamSumPt05_");
+AddBranch(&patMuonID_,"patMuonID_");
+
 }
 
 
@@ -250,5 +266,7 @@ patMuonGamSumPt04_.clear();
 patMuonChHadSumPt05_.clear();
 patMuonNeHadSumPt05_.clear();
 patMuonGamSumPt05_.clear();
+patMuonID_.clear();
+
 nmu=0;
 }

@@ -30,7 +30,9 @@ deeper study.
 
 
 
-patElecTree::patElecTree(std::string name, TTree* tree, const edm::ParameterSet& iConfig){
+patElecTree::patElecTree(std::string name, TTree* tree, const edm::ParameterSet& iConfig):
+e2012ID_ ( iConfig.getParameter<edm::ParameterSet>("e2012IDSet"))
+{
  tree_=tree; 
   patElecLabel_ = iConfig.getParameter<edm::InputTag>("patElectronsPY");
   beamSpotLabel_ = iConfig.getParameter<edm::InputTag> ("beamSpotLabel");
@@ -197,6 +199,11 @@ lepIsoRho_.push_back(-999);
   pat::ElectronCollection::const_iterator ele;
   
   for(ele=eleColl.begin(); ele!=eleColl.end(); ele++){
+  //eleid
+   std::map<std::string, bool> Pass =  e2012ID_.CutRecord(*ele);
+    int passOrNot = PassAll(Pass);
+//   cout <<"Elec passOrNot: "<<passOrNot<<endl;
+     patElecID_.push_back(passOrNot);
     patElecEt_.push_back(ele->et());
     patElecEnergy_.push_back(ele->energy());
     patElecPt_.push_back(ele->p4().pt());
@@ -293,6 +300,11 @@ lepIsoRho_.push_back(-999);
   patElechasMatchConv_.push_back(ele->userFloat("hasMatchConv"));
   }//electron loop
 }
+void
+patElecTree::AddBranch(std::vector<int>* vec, std::string name){
+  std::string brName=name;
+  tree_->Branch(brName.c_str(),vec);
+}
 
 
 void
@@ -378,7 +390,7 @@ patElecTree::SetBranches(){
   AddBranch(&patElectrackMomentumAtVtxMag2_,"patElectrackMomentumAtVtxMag2_"); 
   AddBranch(&patElececalEnergy_,"patElececalEnergy_");
   AddBranch(&patElechasMatchConv_,"patElechasMatchConv_");
-
+  AddBranch(&patElecID_,"patElecID_");
 }
 
 
@@ -452,6 +464,7 @@ patElecTree::Clear(){
   patElectrackMomentumAtVtxMag2_.clear();
   patElececalEnergy_.clear();
   patElechasMatchConv_.clear();
+patElecID_.clear();
 }
 
 

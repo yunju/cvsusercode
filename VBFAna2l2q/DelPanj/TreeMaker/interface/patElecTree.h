@@ -23,6 +23,7 @@ Author: Anil P Singh
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "DelPanj/TreeMaker/interface/utils.h"
+#include "DelPanj/TreeMaker/interface/eSelector.h"
 
 using namespace std;
 using namespace edm;
@@ -48,12 +49,14 @@ class patElecTree{
   void AddBranch(double* x, std::string name);
   void AddBranch(std::vector<double>*, std::string name);
   void AddBranch(std::vector<std::string>*, std::string name);
+void AddBranch(std::vector<int>*, std::string name);
   edm::InputTag dcsTag_;
   bool isData_;
 
   edm::InputTag patElecLabel_;
   edm::InputTag beamSpotLabel_;
   edm::InputTag JetForElecTree_;
+  eSelector e2012ID_;
   int Nelecs;
   std::vector<int> patElecType;
  //pt, eta, phi, M : Enough to caluclate
@@ -131,7 +134,7 @@ class patElecTree{
   std::vector<double> patElectrackMomentumAtVtxMag2_;
   std::vector<double> patElececalEnergy_;
   std::vector<double> patElechasMatchConv_;
-
+  std::vector<int> patElecID_; 
 
 };
 

@@ -9,6 +9,7 @@ jetTree::jetTree(std::string desc, TTree* tree, const edm::ParameterSet& iConfig
 {
   tree_=tree;  
   JetLabel_ = iConfig.getParameter<edm::InputTag>("JetsPY");
+  genPartLabel_ = iConfig.getParameter<edm::InputTag>("genPartLabel");
   SetBranches();
 }
 
@@ -21,8 +22,10 @@ jetTree::~jetTree(){
 void
 jetTree::Fill(const edm::Event& iEvent, edm::EventSetup const& iSetup){
   Clear();
+   bool isData = iEvent.isRealData();  
+      double dummy = -99999.0;
   
-  edm::Handle<std::vector<pat::Jet> > JetHandle;
+edm::Handle<std::vector<pat::Jet> > JetHandle;
   if(not iEvent.getByLabel(JetLabel_,JetHandle)){
     std::cout<<"FATAL EXCEPTION: "<<"Following Not Found: "
 	     <<JetLabel_<<std::endl; exit(0);}
@@ -48,16 +51,84 @@ jetTree::Fill(const edm::Event& iEvent, edm::EventSetup const& iSetup){
       JetCharEmEFr_.push_back(jet->chargedEmEnergyFraction ());
     }
     else{
-      double dummy = -99999.0;
       JetCharMulti_.push_back(dummy);
       JetNeutEmEFr_.push_back(dummy);
       JetCharHadEFr_.push_back(dummy);
       JetNeutHadEFr_.push_back(dummy);
       JetCharEmEFr_.push_back(dummy);
     }
-    
+     
+     if(!isData)
+      {
+        edm::Handle<std::vector<reco::GenParticle> > genParticlesHandle; 
+        iEvent.getByLabel(genPartLabel_,genParticlesHandle);
+   
+    //    cout<<"begin"<<endl; 
+        if ( genParticlesHandle.isValid()&&jet->genParton()) 
+        {
+             JetGenPartonID_.push_back(jet->genParton()->pdgId());
+             JetGenPartonEn_.push_back(jet->genParton()->energy());
+             JetGenPartonPt_.push_back(jet->genParton()->pt());
+             JetGenPartonEta_.push_back(jet->genParton()->eta());
+             JetGenPartonPhi_.push_back(jet->genParton()->phi());
+             JetGenPartonStatus_.push_back(jet->genParton()->status());
+             JethasGenParton_.push_back(1);
+             if(jet->genParton()->mother())
+             {
+               JetGenPartonU1ID_.push_back(jet->genParton()->mother()->pdgId());
+               if(jet->genParton()->mother()->mother())
+               {
+                 JetGenPartonU2ID_.push_back(jet->genParton()->mother()->mother()->pdgId());
+                 if(jet->genParton()->mother()->mother()->mother())     
+                 {
+                   JetGenPartonU3ID_.push_back(jet->genParton()->mother()->mother()->mother()->pdgId()); 
+                 }//has u3
+                 else
+                 {
+                   JetGenPartonU3ID_.push_back(dummy);       
+                 }//no u3       
 
-  }
+               }//has u2
+               else
+               {
+                 JetGenPartonU2ID_.push_back(dummy);
+                 JetGenPartonU3ID_.push_back(dummy);
+               }//no u2
+   
+
+             }//has u1
+             else
+             {
+             JetGenPartonU1ID_.push_back(dummy);
+             JetGenPartonU2ID_.push_back(dummy);
+             JetGenPartonU3ID_.push_back(dummy);
+             }//no u1 
+   
+
+
+         }//has genparton
+         else
+         {
+             JetGenPartonID_.push_back(dummy);
+             JetGenPartonEn_.push_back(dummy);
+             JetGenPartonPt_.push_back(dummy);
+             JetGenPartonEta_.push_back(dummy);
+             JetGenPartonPhi_.push_back(dummy);
+             JetGenPartonStatus_.push_back(dummy);
+             
+             JetGenPartonU1ID_.push_back(dummy);
+             JetGenPartonU2ID_.push_back(dummy);
+             JetGenPartonU3ID_.push_back(dummy);
+             JethasGenParton_.push_back(0);  
+         }//no genparton
+
+  //    cout<<"end"<<endl;
+         
+    }//is MC
+
+ 
+
+  }//jet loop
 }
 
 void
@@ -74,6 +145,26 @@ jetTree::SetBranches(){
   AddBranch(&JetCharHadEFr_, "JetCharHadEFr_");
   AddBranch(&JetNeutHadEFr_, "JetNeutHadEFr_");
   AddBranch(&JetCharEmEFr_, "JetCharEmEFr_");
+
+   AddBranch(&JetNConstituents_,"JetNConstituents_");
+    AddBranch(&JetGenPartonID_,"JetGenPartonID_");
+    AddBranch(&JetGenPartonEn_,"JetGenPartonEn_");
+    AddBranch(&JetGenPartonPt_,"JetGenPartonPt_");
+    AddBranch(&JetGenPartonEta_,"JetGenPartonEta_") ;
+    AddBranch(&JetGenPartonPhi_,"JetGenPartonPhi_") ;
+    AddBranch(&JetGenPartonStatus_,"JetGenPartonStatus_");
+    AddBranch(&JetGenPartonU3ID_,"JetGenPartonU3ID_");
+    AddBranch(&JetGenPartonU2ID_,"JetGenPartonU2ID_");
+    AddBranch(&JetGenPartonU1ID_,"JetGenPartonU1ID_");
+    AddBranch(&JethasGenParton_,"JethasGenParton_") ;
+
+
+
+
+
+
+
+
 
 }
 
@@ -92,6 +183,29 @@ jetTree::Clear(){
   JetCharHadEFr_.clear();
   JetNeutHadEFr_.clear();
   JetCharEmEFr_.clear();
+
+JetNConstituents_.clear();
+ JetGenPartonID_.clear();
+ JetGenPartonEn_.clear();
+ JetGenPartonPt_.clear();
+ JetGenPartonEta_.clear();
+ JetGenPartonPhi_.clear();
+ JetGenPartonStatus_.clear();
+ JetGenPartonU3ID_.clear();
+ JetGenPartonU2ID_.clear();
+ JetGenPartonU1ID_.clear();
+ JethasGenParton_.clear();
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

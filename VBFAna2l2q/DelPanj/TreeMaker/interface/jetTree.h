@@ -44,6 +44,8 @@ class jetTree  : public baseTree{
  private:
   jetTree();
   edm::InputTag JetLabel_;
+   edm::InputTag genPartLabel_;
+
   bool usePFObjects_;
   //edm::ParameterSet parSet_;	 
 
@@ -59,6 +61,20 @@ class jetTree  : public baseTree{
   std::vector<double> JetCharHadEFr_;
   std::vector<double> JetNeutHadEFr_;
   std::vector<double> JetCharEmEFr_;
+
+   std::vector<double>  JetNConstituents_;
+   std::vector<int>     JetGenPartonID_;
+   std::vector<double>  JetGenPartonEn_;
+   std::vector<double>  JetGenPartonPt_;
+   std::vector<double>  JetGenPartonEta_;
+   std::vector<double>  JetGenPartonPhi_;
+   std::vector<int>     JetGenPartonStatus_;
+   std::vector<int>     JetGenPartonU3ID_;
+   std::vector<int>     JetGenPartonU2ID_;
+   std::vector<int>     JetGenPartonU1ID_;
+   std::vector<int>     JethasGenParton_;
+
+
 
 };
 
