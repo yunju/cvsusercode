@@ -18,6 +18,19 @@ jetTree::~jetTree(){
   delete tree_;
 }
 
+bool jetTree::passLooseJetID(const pat::Jet* recjet)
+{
+  double eta = recjet->eta();
+  if(recjet->getPFConstituents().size() <= 1)return false;                                                           
+  if(recjet->neutralHadronEnergyFraction() >= 0.99)return false;
+  if(recjet->neutralEmEnergyFraction() >= 0.99)return false;
+  //   // for the tracker region
+  if(fabs(eta)<2.4 && recjet->chargedHadronEnergyFraction()<= 0.0)return false;
+  if(fabs(eta)<2.4 && recjet->chargedEmEnergyFraction() >= 0.99)return false;
+  if(fabs(eta)<2.4 && recjet->chargedMultiplicity() <= 0)return false;
+  return true;
+
+}
 
 void
 jetTree::Fill(const edm::Event& iEvent, edm::EventSetup const& iSetup){
@@ -42,6 +55,22 @@ edm::Handle<std::vector<pat::Jet> > JetHandle;
     JetPhi_.push_back(jet->phi());
     JetM_.push_back(jet->mass());
     JetEn_.push_back(jet->energy());
+
+     
+    if ( !passLooseJetID(&*jet) )
+    { 
+         JetID_.push_back(0); 
+         //cout<<"Fail: "<<jet->eta()<<"jet->chargedMultiplicity() "<<jet->chargedMultiplicity()<<" "<<jet->neutralEmEnergyFraction ()<<" "<<jet->chargedHadronEnergyFraction()<<endl; 
+    //cin.get();   
+    }
+    else
+    {
+         JetID_.push_back(1); 
+        // cout<<jet->eta()<<"jet->chargedMultiplicity() "<<jet->chargedMultiplicity()<<" "<<jet->neutralEmEnergyFraction ()<<" "<<jet->chargedHadronEnergyFraction()<<endl;
+          //cin.get();  
+    }    
+
+
 
     if(jet->isPFJet()){      
       JetCharMulti_.push_back(jet->chargedMultiplicity());
@@ -145,6 +174,7 @@ jetTree::SetBranches(){
   AddBranch(&JetCharHadEFr_, "JetCharHadEFr_");
   AddBranch(&JetNeutHadEFr_, "JetNeutHadEFr_");
   AddBranch(&JetCharEmEFr_, "JetCharEmEFr_");
+  AddBranch(&JetID_,"JetID_");  
 
    AddBranch(&JetNConstituents_,"JetNConstituents_");
     AddBranch(&JetGenPartonID_,"JetGenPartonID_");
@@ -183,7 +213,8 @@ jetTree::Clear(){
   JetCharHadEFr_.clear();
   JetNeutHadEFr_.clear();
   JetCharEmEFr_.clear();
-
+ JetID_.clear();
+  
 JetNConstituents_.clear();
  JetGenPartonID_.clear();
  JetGenPartonEn_.clear();
