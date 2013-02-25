@@ -37,11 +37,13 @@ class jetTree  : public baseTree{
  public:
   jetTree(std::string name, TTree* tree, const edm::ParameterSet& cfg);//name=patJetAk05
   ~jetTree();
+
   void Fill(const edm::Event& iEvent, edm::EventSetup const& iSetup) ; 
   void SetBranches();
   void Clear();
  
  private:
+  bool passLooseJetID(const pat::Jet* recJet);
   jetTree();
   edm::InputTag JetLabel_;
    edm::InputTag genPartLabel_;
@@ -61,6 +63,7 @@ class jetTree  : public baseTree{
   std::vector<double> JetCharHadEFr_;
   std::vector<double> JetNeutHadEFr_;
   std::vector<double> JetCharEmEFr_;
+  std::vector<int> JetID_;
 
    std::vector<double>  JetNConstituents_;
    std::vector<int>     JetGenPartonID_;
