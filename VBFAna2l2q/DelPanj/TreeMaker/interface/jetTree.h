@@ -64,6 +64,7 @@ class jetTree  : public baseTree{
   std::vector<double> JetNeutHadEFr_;
   std::vector<double> JetCharEmEFr_;
   std::vector<int> JetID_;
+  std::vector<double> JetJetProb_;
 
    std::vector<double>  JetNConstituents_;
    std::vector<int>     JetGenPartonID_;

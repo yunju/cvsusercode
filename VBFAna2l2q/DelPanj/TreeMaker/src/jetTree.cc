@@ -69,8 +69,8 @@ edm::Handle<std::vector<pat::Jet> > JetHandle;
         // cout<<jet->eta()<<"jet->chargedMultiplicity() "<<jet->chargedMultiplicity()<<" "<<jet->neutralEmEnergyFraction ()<<" "<<jet->chargedHadronEnergyFraction()<<endl;
           //cin.get();  
     }    
-
-
+    //jetProb btag
+  JetJetProb_.push_back(jet->bDiscriminator("jetProbabilityBJetTags"));
 
     if(jet->isPFJet()){      
       JetCharMulti_.push_back(jet->chargedMultiplicity());
@@ -175,6 +175,7 @@ jetTree::SetBranches(){
   AddBranch(&JetNeutHadEFr_, "JetNeutHadEFr_");
   AddBranch(&JetCharEmEFr_, "JetCharEmEFr_");
   AddBranch(&JetID_,"JetID_");  
+  AddBranch(&JetJetProb_,"JetJetProb_");
 
    AddBranch(&JetNConstituents_,"JetNConstituents_");
     AddBranch(&JetGenPartonID_,"JetGenPartonID_");
@@ -214,6 +215,7 @@ jetTree::Clear(){
   JetNeutHadEFr_.clear();
   JetCharEmEFr_.clear();
  JetID_.clear();
+ JetJetProb_.clear();
   
 JetNConstituents_.clear();
  JetGenPartonID_.clear();
