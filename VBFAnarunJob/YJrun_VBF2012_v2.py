@@ -78,7 +78,7 @@ process.tree1 = cms.EDAnalyzer(
 	
         patMuonsPY=cms.InputTag("userDataSelectedMuons"),
 	patElectronsPY = cms.InputTag("userDataSelectedElectrons"),
-        JetsPY=cms.InputTag("customPFJets"), 
+        JetsPY=cms.InputTag("customPFJetsNoPUSub"), 
         
 
         JetForElecTreePY =cms.InputTag("JetForElecTreePY"),
@@ -101,7 +101,7 @@ process.TFileService = cms.Service("TFileService",
     #  fileName = cms.string("ZZ200YJTest_v2.root"),
       #fileName = cms.string("GGH200YJTest_v2.root"),
       #fileName = cms.string("Mjj_VBF200YJTest_v2.root"),
-      fileName = cms.string("VBFTree_v1.root"),
+      fileName = cms.string("VBFTree_v2.root"),
 
 
 
