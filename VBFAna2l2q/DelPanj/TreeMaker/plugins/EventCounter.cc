@@ -13,7 +13,7 @@
 //
 // Original Author:  Anil Pratap Singh,,,
 //         Created:  Mon Sep 19 05:31:51 CEST 2011
-// $Id: EventCounter.cc,v 1.1 2012/03/15 09:58:19 lovedeep Exp $
+// $Id: YJEventCounter.cc,v 1.1 2013/01/17 17:06:09 yunju Exp $
 //
 //
 
@@ -39,10 +39,10 @@
 // class declaration
 //
 
-class EventCounter : public edm::EDAnalyzer {
+class YJEventCounter : public edm::EDAnalyzer {
    public:
-      explicit EventCounter(const edm::ParameterSet&);
-      ~EventCounter();
+      explicit YJEventCounter(const edm::ParameterSet&);
+      ~YJEventCounter();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -70,11 +70,11 @@ class EventCounter : public edm::EDAnalyzer {
 //
 // static data member definitions
 //
-//int EventCounter::instance_ = 1;
+//int YJEventCounter::instance_ = 1;
 //
 // constructors and destructor
 //
-EventCounter::EventCounter(const edm::ParameterSet& iConfig)
+YJEventCounter::YJEventCounter(const edm::ParameterSet& iConfig)
 :instance_(iConfig.getParameter<int>("instance"))
 {
 //now do what ever initialization is needed
@@ -91,7 +91,7 @@ EventCounter::EventCounter(const edm::ParameterSet& iConfig)
 }
 
 
-EventCounter::~EventCounter()
+YJEventCounter::~YJEventCounter()
 {
  
    // do anything here that needs to be done at desctruction time
@@ -106,7 +106,7 @@ EventCounter::~EventCounter()
 
 // ------------ method called for each event  ------------
 void
-EventCounter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+YJEventCounter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
    hCount_->Fill(instance_);
@@ -125,43 +125,43 @@ EventCounter::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 // ------------ method called once each job just before starting event loop  ------------
 void 
-EventCounter::beginJob()
+YJEventCounter::beginJob()
 {
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
 void 
-EventCounter::endJob() 
+YJEventCounter::endJob() 
 {
 }
 
 // ------------ method called when starting to processes a run  ------------
 void 
-EventCounter::beginRun(edm::Run const&, edm::EventSetup const&)
+YJEventCounter::beginRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a run  ------------
 void 
-EventCounter::endRun(edm::Run const&, edm::EventSetup const&)
+YJEventCounter::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when starting to processes a luminosity block  ------------
 void 
-EventCounter::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+YJEventCounter::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
 void 
-EventCounter::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+YJEventCounter::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void
-EventCounter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+YJEventCounter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -170,4 +170,4 @@ EventCounter::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(EventCounter);
+DEFINE_FWK_MODULE(YJEventCounter);

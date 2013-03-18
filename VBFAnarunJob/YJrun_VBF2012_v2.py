@@ -91,7 +91,7 @@ process.tree1 = cms.EDAnalyzer(
 
 
 
-process.counter_original = cms.EDAnalyzer('EventCounter',
+process.counter_original = cms.EDAnalyzer('YJEventCounter',
    instance = cms.int32(1) 
 )
 

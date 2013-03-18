@@ -19,9 +19,9 @@ process.source = cms.Source("PoolSource",
 #'file:/scratch/yunju/2kTW/CMSSW_5_2_5/src/DYJetsToLL_M-10To50_h2l2qSkimData_15_1_Jz1.root',
 #'file:/scratch/yunju/2kTW/CMSSW_5_2_5/src/DYJetsToLL_M-10To50_h2l2qSkimData_219_1_RZs.root'
 #'root://eoscms//eos/cms/store/mc/Summer12/GluGluToHToZZTo2L2Q_M-200_8TeV-powheg-pythia6/AODSIM/PU_S7_START1B1A-3AB8-E111-8D00-003048FFCB8C.root'
-'file:/data4/yunju/VBF2012/skim2l2q/SkimPAT_H2l2q_523_v3_l_GluGluToHToZZTo2L2Q_M-200h2l2qSkimData_22_1_2KD.root'
+#'file:/data4/yunju/VBF2012/skim2l2q/SkimPAT_H2l2q_523_v3_l_GluGluToHToZZTo2L2Q_M-200h2l2qSkimData_22_1_2KD.root'
 #'file:/home/yunju/cdxfe_Higgs/Test_525skim/skimsample/YJTest_h2l2qSkimData.root'
-
+'file:/data4/yunju/VBF2012/SkimPAT_H2l2q_533_v1_GluGluToHToZZTo2L2Q_M-200_h2l2qSkimData_2_1_5SE_2nd.root'
    )
  )
 
@@ -56,7 +56,7 @@ process.tree1 = cms.EDAnalyzer(
 	'TreeMaker',
 	fillPUweightInfo_ = cms.bool(False),
 	fillEventInfo_ = cms.bool(False),
-	fillGenInfo_   = cms.bool(True),
+	fillGenInfo_   = cms.bool(False),
 	fillMuonInfo_  = cms.bool(True),
 	fillElecInfo_  = cms.bool(True),
 	fillElecIsoInfo_ = cms.bool(False),
@@ -65,7 +65,7 @@ process.tree1 = cms.EDAnalyzer(
 	fillTrigInfo_  = cms.bool(False),
 	fillPhotInfo_  = cms.bool(False),
 	fillZJetPlant_ = cms.bool(False),
-	fillZZInfo_    = cms.bool(True),
+	fillZZInfo_    = cms.bool(False),
         
         eleRhoIso = cms.InputTag("kt6PFJetsForIso","rho"),
         muoRhoIso = cms.InputTag("kt6PFJetsCentralNeutral", "rho"),
@@ -78,10 +78,10 @@ process.tree1 = cms.EDAnalyzer(
 	
         patMuonsPY=cms.InputTag("userDataSelectedMuons"),
 	patElectronsPY = cms.InputTag("userDataSelectedElectrons"),
-        JetsPY=cms.InputTag("customPFJets"), 
+        JetsPY=cms.InputTag("customPFJetsNoPUSub"), 
         
 
-        JetForElecTreePY =cms.InputTag("JetForElecTreePY"),
+        JetForElecTreePY =cms.InputTag("kt6PFJets"),
         leadElecPset_ = eSel2012HZZ,
 	patMet=cms.InputTag("patMETs"),
 	beamSpotLabel=cms.InputTag("offlineBeamSpot"),
@@ -101,7 +101,7 @@ process.TFileService = cms.Service("TFileService",
     #  fileName = cms.string("ZZ200YJTest_v2.root"),
       #fileName = cms.string("GGH200YJTest_v2.root"),
       #fileName = cms.string("Mjj_VBF200YJTest_v2.root"),
-      fileName = cms.string("VBFTree_v1.root"),
+      fileName = cms.string("VBFTree_MC_53X.root"),
 
 
 

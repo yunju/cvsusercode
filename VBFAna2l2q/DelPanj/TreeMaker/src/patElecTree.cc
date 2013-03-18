@@ -135,10 +135,16 @@ patElecTree::IsoDeposit(const pat::Electron lepton,std::string type,double radiu
 void
 patElecTree::Fill(const edm::Event& iEvent){
 Clear();
-  edm::Handle<pat::ElectronCollection> patElecHandle;
-  if(not iEvent.getByLabel(patElecLabel_,patElecHandle)){
+  
+//cout<<"START"<<endl;
+
+Handle<std::vector<pat::Electron> > patElecHandle;
+//cout<<"STARTv"<<endl;
+  if(not iEvent.getByLabel("userDataSelectedElectrons",patElecHandle)){
     std::cout<<"FATAL EXCEPTION: "<<"Following Not Found: "
 	     <<patElecLabel_<<std::endl; exit(0);}
+//cout<<"START2"<<endl;
+
 /*
    edm::Handle<reco::BeamSpot> beamSpotHandle;
    iEvent.getByLabel(beamSpotLabel_, beamSpotHandle);
@@ -158,9 +164,9 @@ Clear();
 
   /////// Pileup density "rho" in the event from PFchs pileup calculation /////
   edm::Handle<double> rhochs;
-
+//cout<<"pwwwwwwwwwwdddddww3"<<endl;
 //  const edm::InputTag eventrhochs(JetForElecTree_, "rho");
-  const edm::InputTag eventrhochs("kt6PFJets", "rho");                    
+//  const edm::InputTag eventrhochs("kt6PFJets", "rho");                    
   /*
   if(not iEvent.getByLabel(JetForElecTree_,rhochs)){
   std::cout<<"FATAL EXCEPTION: "<<"Following Not Found: "
@@ -197,12 +203,15 @@ lepIsoRho_.push_back(-999);
 
   nele=eleColl.size();
   pat::ElectronCollection::const_iterator ele;
+  // cout <<"El: "<<nele<< endl;
   
   for(ele=eleColl.begin(); ele!=eleColl.end(); ele++){
-  //eleid
+  // cout <<"El333"<<endl;
+  
+   //eleid
    std::map<std::string, bool> Pass =  e2012ID_.CutRecord(*ele);
     int passOrNot = PassAll(Pass);
-//   cout <<"Elec passOrNot: "<<passOrNot<<endl;
+  // cout <<"Elec passOrNot: "<<passOrNot<<endl;
      patElecID_.push_back(passOrNot);
     patElecEt_.push_back(ele->et());
     patElecEnergy_.push_back(ele->energy());
@@ -264,6 +273,7 @@ lepIsoRho_.push_back(-999);
 //     patElecDszBS_.push_back(ele->gsfTrack()->dsz(beamSpot.position()));
 //     patElecDzBS_.push_back(ele->gsfTrack()->dz(beamSpot.position()));
 //     patElecMva_.push_back(ele->pfCandidateRef()->mva_e_pi());
+ //  cout <<"Elec p2assOrNot: "<<passOrNot<<endl;
 
 /*
     patElecChHadSumPt03_.push_back(IsoDeposit(*ele,"chHad",0.3,0.07,0.025));
@@ -294,10 +304,12 @@ lepIsoRho_.push_back(-999);
     patElecInEndcap_.push_back(ele->isEE());
   
    
-
+//cout<<"pss3"<<endl;
   patElectrackMomentumAtVtxMag2_.push_back(ele->trackMomentumAtVtx().mag2());
   patElececalEnergy_.push_back(ele->ecalEnergy());
   patElechasMatchConv_.push_back(ele->userFloat("hasMatchConv"));
+
+//  cout<<"p3"<<endl;
   }//electron loop
 }
 void
