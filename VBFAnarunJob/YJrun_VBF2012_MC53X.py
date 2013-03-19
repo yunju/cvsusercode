@@ -49,7 +49,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 
 from DelPanj.TreeMaker.eSel2012HZZ_cff import *
-from DelPanj.TreeMaker.muSel2012HZZ_cff import *
+from DelPanj.TreeMaker.muSelYJVBF_cff import *
 
 
 process.tree1 = cms.EDAnalyzer(
@@ -69,8 +69,10 @@ process.tree1 = cms.EDAnalyzer(
         
         eleRhoIso = cms.InputTag("kt6PFJetsForIso","rho"),
         muoRhoIso = cms.InputTag("kt6PFJetsCentralNeutral", "rho"),
+        
         e2012IDSet  =  eSel2012HZZ,
-        mu2012IDSet = muSel2012HZZ,
+        mu2012IDSet = muSelYJVBF,
+        
         hzzeejjTag = cms.InputTag("hzzeejj:h"),
         hzzmmjjTag = cms.InputTag("hzzmmjj:h"),
 	
