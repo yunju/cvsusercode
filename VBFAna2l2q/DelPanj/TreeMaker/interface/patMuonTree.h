@@ -69,15 +69,12 @@ muSelector mu2012ID_;
   std::vector<double> patMuonNumMatches_;
   std::vector<double> patMuonStationMask_;
   std::vector<double> patMuonNumSegments_;
-  std::vector<double> patMuonChi2Ndoff_;
-  std::vector<double> patMuonNhits_;
+  
   std::vector<double> patMuonQoverP_;
   std::vector<double> patMuonTheta_;
   std::vector<double> patMuonLambda_;
-  std::vector<double> patMuonDxy_;
   std::vector<double> patMuonD0_;
   std::vector<double> patMuonDsz_;
-  std::vector<double> patMuonDs_;
   std::vector<double> patMuonDxyBS_;
   std::vector<double> patMuonDzBS_;
   std::vector<double> patMuonDszBS_;
@@ -97,14 +94,30 @@ muSelector mu2012ID_;
   std::vector<double> patMuonNeHadSumPt03_;
   std::vector<double> patMuonGamSumPt03_;
 
-  std::vector<double> patMuonChHadSumPt04_;
-  std::vector<double> patMuonNeHadSumPt04_;
-  std::vector<double> patMuonGamSumPt04_;
 
   std::vector<double> patMuonChHadSumPt05_;
   std::vector<double> patMuonNeHadSumPt05_;
   std::vector<double> patMuonGamSumPt05_;
+ //YunJu's variable 
   std::vector<int> patMuonID_;
+
+  std::vector<int> isGloMu_;
+  std::vector<int> isSTDMu_;
+  std::vector<int> isTraMu_;
+  
+  std::vector<double> patMuonChi2Ndoff_;
+  std::vector<double> patMuonNhits_;
+  std::vector<double> patMuonNMatStat_;
+  std::vector<double> patMuondB_;
+//  std::vector<double> patMuonDxy_;
+  std::vector<double> patMuonDz_;
+  std::vector<double> patMuonNumPix_;
+  std::vector<double> patMuonNumTlayer_;
+//YJ for  muon pfiso 
+  std::vector<double> patMuonChHadSumPt04_;
+  std::vector<double> patMuonNeHadSumPt04_;
+  std::vector<double> patMuonGamSumPt04_;
+  std::vector<double> patMuonPUSumPt04_;
 
 };
 
