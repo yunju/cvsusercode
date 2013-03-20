@@ -100,7 +100,7 @@ Clear();
     //patMuonSumTrkPt_.push_back(muTrk->);
     //patMuonNumSegments_.push_back(muTrkTrk->);
    
-    cout<<"which muon : "<<isGlobalMuon<<" "<<isStandAloneMuon<<" "<<isTrackMuon <<endl;
+    //cout<<"which muon : "<<isGlobalMuon<<" "<<isStandAloneMuon<<" "<<isTrackMuon <<endl;
     if(isGlobalMuon)
     {
     patMuonChi2Ndoff_.push_back(mu->globalTrack()->normalizedChi2());

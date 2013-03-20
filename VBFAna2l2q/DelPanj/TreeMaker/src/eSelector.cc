@@ -124,6 +124,8 @@ eSelector::CutRecord(const pat::Electron& e){
 
   if(doRhoCorr_)
     {
+     //old effective area at 2011
+     /*
       ElectronEffectiveArea::ElectronEffectiveAreaTarget effAreaTarget_ = 
   	isData_? ElectronEffectiveArea::kEleEAData2011:
   	ElectronEffectiveArea::kEleEAFall11MC;
@@ -134,8 +136,22 @@ eSelector::CutRecord(const pat::Electron& e){
  
       double AEff = ElectronEffectiveArea::GetElectronEffectiveArea
 	(effAreaType_, fabs(eta), effAreaTarget_);
-      
       iso4 = iso1 + std::max(0.0, iso2+iso3-rho_*AEff);
+      
+      */
+      // for2013 effective area pf iso 
+      float EffectiveArea;
+      if(abs(e.superCluster()->eta())<1.0 )                                               EffectiveArea = 0.13 ;
+      if(abs(e.superCluster()->eta())>1.0     && abs(e.superCluster()->eta())<1.479 )     EffectiveArea = 0.14 ;
+      if(abs(e.superCluster()->eta())>1.479   && abs(e.superCluster()->eta())<2.0 )       EffectiveArea = 0.07 ;
+      if(abs(e.superCluster()->eta())>2.0     && abs(e.superCluster()->eta())<2.2 )       EffectiveArea = 0.09 ;
+      if(abs(e.superCluster()->eta())>2.2     && abs(e.superCluster()->eta())<2.3 )       EffectiveArea = 0.11 ;
+      if(abs(e.superCluster()->eta())>2.3     && abs(e.superCluster()->eta())<2.4 )       EffectiveArea = 0.11 ;
+      if(abs(e.superCluster()->eta())>2.4 )                                               EffectiveArea = 0.14 ; 
+
+
+
+      iso4 = iso1 + std::max(0.0, iso2+iso3-rho_*EffectiveArea);
 
     }
   else 

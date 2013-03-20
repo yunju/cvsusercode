@@ -55,7 +55,7 @@ void AddBranch(std::vector<int>*, std::string name);
 
   edm::InputTag patElecLabel_;
   edm::InputTag beamSpotLabel_;
-  edm::InputTag JetForElecTree_;
+  edm::InputTag EleRhoLabel_;
   eSelector e2012ID_;
   int Nelecs;
   std::vector<int> patElecType;

@@ -36,7 +36,7 @@ e2012ID_ ( iConfig.getParameter<edm::ParameterSet>("e2012IDSet"))
  tree_=tree; 
   patElecLabel_ = iConfig.getParameter<edm::InputTag>("patElectronsPY");
   beamSpotLabel_ = iConfig.getParameter<edm::InputTag> ("beamSpotLabel");
-  JetForElecTree_ = iConfig.getParameter<edm::InputTag> ("JetForElecTreePY");
+  EleRhoLabel_ = iConfig.getParameter<edm::InputTag> ("EleRhoPY");
   SetBranches();
 }
 
@@ -140,7 +140,7 @@ Clear();
 
 Handle<std::vector<pat::Electron> > patElecHandle;
 //cout<<"STARTv"<<endl;
-  if(not iEvent.getByLabel("userDataSelectedElectrons",patElecHandle)){
+  if(not iEvent.getByLabel(patElecLabel_,patElecHandle)){
     std::cout<<"FATAL EXCEPTION: "<<"Following Not Found: "
 	     <<patElecLabel_<<std::endl; exit(0);}
 //cout<<"START2"<<endl;
@@ -196,7 +196,11 @@ PFchsJetRho_.push_back(-999);
  
  lepIsoRho_.push_back(lepIsoRho);
 */
-lepIsoRho_.push_back(-999);
+
+edm::Handle<double> ele_rho_event;
+iEvent.getByLabel(EleRhoLabel_,ele_rho_event);
+
+lepIsoRho_.push_back(*(ele_rho_event.product()));
  
   pat::ElectronCollection eleColl(*(patElecHandle.product()));
   std::sort(eleColl.begin(),eleColl.end(),PtGreater());
