@@ -48,14 +48,14 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 #)
 
 
-from DelPanj.TreeMaker.eSel2012HZZ_cff import *
+from DelPanj.TreeMaker.eSelYJVBF_cff import *
 from DelPanj.TreeMaker.muSelYJVBF_cff import *
 
 
 process.tree1 = cms.EDAnalyzer(
 	'TreeMaker',
 	fillPUweightInfo_ = cms.bool(False),
-	fillEventInfo_ = cms.bool(False),
+	fillEventInfo_ = cms.bool(True),
 	fillGenInfo_   = cms.bool(False),
 	fillMuonInfo_  = cms.bool(True),
 	fillElecInfo_  = cms.bool(True),
@@ -65,13 +65,13 @@ process.tree1 = cms.EDAnalyzer(
 	fillTrigInfo_  = cms.bool(False),
 	fillPhotInfo_  = cms.bool(False),
 	fillZJetPlant_ = cms.bool(False),
-	fillZZInfo_    = cms.bool(False),
+	fillZZInfo_    = cms.bool(True),
         
-        eleRhoIso = cms.InputTag("kt6PFJetsForIso","rho"),
-        muoRhoIso = cms.InputTag("kt6PFJetsCentralNeutral", "rho"),
+        eleRhoIso = cms.InputTag("kt6PFJets","rho"),# for rho in eSelector
+        muoRhoIso = cms.InputTag("kt6PFJetsCentralNeutral", "rho"),#not using rho in muob any more
         
-        e2012IDSet  =  eSel2012HZZ,
-        mu2012IDSet = muSelYJVBF,
+        e2012IDSet  = eSelYJVBF, # eSelector
+        mu2012IDSet = muSelYJVBF,# muSelector
         
         hzzeejjTag = cms.InputTag("hzzeejj:h"),
         hzzmmjjTag = cms.InputTag("hzzmmjj:h"),
@@ -83,8 +83,8 @@ process.tree1 = cms.EDAnalyzer(
         JetsPY=cms.InputTag("customPFJetsNoPUSub"), 
         
 
-        JetForElecTreePY =cms.InputTag("kt6PFJets"),
-        leadElecPset_ = eSel2012HZZ,
+        EleRhoPY =cms.InputTag("kt6PFJets","rho"),#for rho in patEletree
+        leadElecPset_ = eSelYJVBF,#in pateleisotree not using now 
 	patMet=cms.InputTag("patMETs"),
 	beamSpotLabel=cms.InputTag("offlineBeamSpot"),
 	outFileName=cms.string('outputFileName.root'),
