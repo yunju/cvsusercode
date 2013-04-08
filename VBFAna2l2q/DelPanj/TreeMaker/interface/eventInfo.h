@@ -9,7 +9,9 @@
 #include "FWCore/Framework/interface/Event.h" 
 #include "FWCore/Framework/interface/Frameworkfwd.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
-
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "FWCore/Common/interface/TriggerNames.h"
+using namespace std;
 
 class eventInfo{
 
@@ -23,7 +25,8 @@ class eventInfo{
   void SetBranches();
   void AddBranch(int* x, std::string name);
   void AddBranch(std::vector<double>* vec, std::string name);
-    
+  void AddBranch(std::vector<bool>* vec, std::string name);  
+  
   TTree *tree_;
   std::string name_;
   int nEvt_;
@@ -35,7 +38,8 @@ class eventInfo{
   std::vector<double> vertexX_;
   std::vector<double> vertexY_;
   std::vector<double> vertexZ_;		
-
+  int HLTDoubleEle_;
+  int HLTDoubleMu_;
 };
 
 #endif
