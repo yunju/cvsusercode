@@ -30,6 +30,7 @@ TreeMaker::TreeMaker(const edm::ParameterSet& iConfig)
    fillMetInfo_=0;
    fillPhotInfo_=0; 
    fillZZInfo_  = 0;
+   fillYJHiggInfo_=0; 
 
    fillPUweightInfo_ = iConfig.getParameter<bool>("fillPUweightInfo_");
    fillEventInfo_ = iConfig.getParameter<bool>("fillEventInfo_");
@@ -43,7 +44,7 @@ TreeMaker::TreeMaker(const edm::ParameterSet& iConfig)
    fillPhotInfo_  = iConfig.getParameter<bool>("fillPhotInfo_");
 
    fillZZInfo_     = iConfig.getParameter<bool>("fillZZInfo_");
-
+   fillYJHiggInfo_ = iConfig.getParameter<bool>("fillYJHiggInfo_");
    //outFileName_= iConfig.getParameter<std::string>("outFileName");
    edm::Service<TFileService> fs;
 
@@ -62,9 +63,8 @@ TreeMaker::TreeMaker(const edm::ParameterSet& iConfig)
    if( fillJetInfo_)   jetTree_=new jetTree("Jet",tree_,iConfig);
    if( fillTrigInfo_)  patHltTree_ = new patHltTree("Hlt",tree_); 
    if( fillPhotInfo_)  photonTree_ = new photonTree("patPhoton", tree_, iConfig); 
-
    if( fillZZInfo_)    ZZTree_ = new ZZTree("zz",tree_,iConfig);
-
+   if( fillYJHiggInfo_) YJHiggTree_ = new YJHiggTree("YJHigg",tree_,iConfig); 
 }
 
 
@@ -88,6 +88,11 @@ TreeMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup){
   if( fillTrigInfo_)  patHltTree_  ->Fill(iEvent);
   if( fillPhotInfo_)  photonTree_  ->Fill(iEvent);
   if( fillZZInfo_)    ZZTree_->Fill(iEvent, iSetup);
+  if( fillYJHiggInfo_) 
+  {
+     YJHiggTree_->Fill(iEvent, iSetup);
+          
+  }
   tree_->Fill();
 }
 
@@ -124,6 +129,13 @@ TreeMaker::endJob() {
 //  file->cd();
 //  file->Write();
 //  file->Close();
+   cout<<"Report from YJ: "<<endl;
+  cout<<"   - Number of processed events: "<<YJHiggTree_->_nEvents<<endl;
+  cout<<"   - Number of rejected events due to trigger: "<<YJHiggTree_->_nFailTrig<<endl;
+  cout<<"   - Number of rejected events due to preselection: "<<YJHiggTree_->_nRejected<<endl;
+  cout<<"   - Number of passed events: "<<YJHiggTree_->_nPassed<<" Num jetevt  save: "<<YJHiggTree_->_nJetEvtSave<<endl;
+
+
 }
 
 DEFINE_FWK_MODULE(TreeMaker);

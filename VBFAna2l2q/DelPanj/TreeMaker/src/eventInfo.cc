@@ -52,7 +52,7 @@ eventInfo::Fill(const edm::Event& iEvent){
 
      for ( size_t itr = 0; itr < hltresults->size(); ++itr ) {
      std::string passedPathName = TrigNames.triggerName(itr);
-    // std::cout<<nEvt_ <<" Trigger names :"<< passedPathName<<std::endl;
+     //std::cout<<nEvt_ <<" Trigger names :"<< passedPathName<<std::endl;
      if (passedPathName.find("HLT_Mu17_Mu8_v")!=std::string::npos && hltresults->accept(itr) ) 
      {
       //std::cout<<"fire Mu"<<std::endl;
@@ -71,10 +71,10 @@ eventInfo::Fill(const edm::Event& iEvent){
    }
     else
     {
-      std::cout<<"RUN mc"<<std::endl;
+      //std::cout<<"RUN mc"<<std::endl;
           
     }
-   // cin.get();
+    //cin.get();
 
 }
 

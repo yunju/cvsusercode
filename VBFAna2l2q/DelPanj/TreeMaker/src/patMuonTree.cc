@@ -36,6 +36,7 @@ patMuonTree::IsoDeposit(const pat::Muon Mu,std::string type,double radius){
 void
 patMuonTree::Fill(const edm::Event& iEvent){
 Clear();
+//  cout<<"========Event :"<<iEvent.id().event()<<endl;
   edm::Handle<pat::MuonCollection> patMuonHandle;
   if(not iEvent.getByLabel(patMuonLabel_,patMuonHandle)){
     std::cout<<"FATAL EXCEPTION: "<<"Following Not Found: "
@@ -50,16 +51,49 @@ Clear();
 
   nmu=muColl.size();
   pat::MuonCollection::const_iterator mu;
-  
+
+/*
+  pat::MuonCollection::const_iterator mu1;
+  pat::MuonCollection::const_iterator mu2;
+   
+ 
+  int nmu1=0;
+  for(mu1=muColl.begin(); mu1!=muColl.end(); mu1++){
+   nmu1++;
+  // cout<<nmu1<<" ---1st  "<<endl;
+   TLorentzVector Vmu1;
+   Vmu1.SetPtEtaPhiM(mu1->pt(),mu1->eta(),mu1->phi(),mu1->mass()); 
+   int nmu2=0; 
+   for(mu2=muColl.begin(); mu2!=muColl.end(); mu2++){
+     
+      //cin.get();  
+      nmu2++;
+    //   cout<<nmu2<<" ---2nd  "<<endl;
+      if(nmu1>=nmu2) continue;  
+    //  cout<<nmu1<<" ---  "<<nmu2<<endl;
+      
+     TLorentzVector Vmu2;     
+      Vmu2.SetPtEtaPhiM(mu2->pt(),mu2->eta(),mu2->phi(),mu2->mass());
+      TLorentzVector Vmumu;
+      Vmumu=Vmu1+Vmu2; 
+      cout<<nmu1<<" "<<nmu2<<" mll:"<<Vmumu.M()<<endl;
+   
+   }
+ }
+
+*/
+ 
+int nMu=0;
   for(mu=muColl.begin(); mu!=muColl.end(); mu++){
 
+   nMu++; 
   // const pat::Muon* myMuo
  // = mu;
   std::map<std::string, bool> Pass = mu2012ID_.CutRecord(*mu);
   int passOrNot = PassAll(Pass);
    //cout <<"passOrNot: "<<passOrNot<<endl;
     patMuonID_.push_back(passOrNot);
-
+   // cout<<"UserDataMu Pt :"<<mu->pt()<<endl;
     patMuonPt_.push_back(mu->pt());
     patMuonEta_.push_back(mu->eta());
     patMuonPhi_.push_back(mu->phi());
@@ -101,8 +135,12 @@ Clear();
     //patMuonNumSegments_.push_back(muTrkTrk->);
    
     //cout<<"which muon : "<<isGlobalMuon<<" "<<isStandAloneMuon<<" "<<isTrackMuon <<endl;
+    
+
     if(isGlobalMuon)
     {
+  //  if(passOrNot&&fabs(mu->eta())<2.4) cout<<"UserDataMu Pt :"<<iEvent.id().event()<<" "<<nMu<<" ;pass:"<<passOrNot <<" ;pt:"<<mu->pt()<<" "<<mu->eta()<<" Charge:"<<mu->charge()<<endl;
+    
     patMuonChi2Ndoff_.push_back(mu->globalTrack()->normalizedChi2());
     patMuonNhits_.push_back(mu->globalTrack()->hitPattern().numberOfValidMuonHits());
     patMuonNMatStat_.push_back(mu->numberOfMatchedStations()); 
@@ -175,8 +213,7 @@ Clear();
     patMuonChHadSumPt05_.push_back(IsoDeposit(*mu,"charHad",0.5));
     patMuonNeHadSumPt05_.push_back(IsoDeposit(*mu,"neuHad",0.5));
     patMuonGamSumPt05_.push_back(IsoDeposit(*mu,"gam",0.5));
-    
-  }
+  }//muon Loop
 }
 void
 patMuonTree::AddBranch(std::vector<int>* vec, std::string name){

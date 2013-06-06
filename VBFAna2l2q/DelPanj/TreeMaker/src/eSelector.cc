@@ -65,12 +65,12 @@ std::map<std::string, bool>
 eSelector::CutRecord(const pat::Electron& e){
 
   std::map<std::string, bool> cuts;
-
+// cout<<"cu :"<<cuts["tx"]<<endl;
        
   //good idea to call the eta and pt methods for once.
   double pt = e.pt();
   double eta = e.superCluster()->eta();
-  bool ingap= fabs(eta)>1.4442 && fabs(eta)< 1.566;
+  bool ingap= fabs(eta)>=1.4442 && fabs(eta)<= 1.566;
   //       std::cout<<"isoBrlX: "<< dcotBrlX_<<std::endl;
   if(ingap)
     {
@@ -91,7 +91,8 @@ eSelector::CutRecord(const pat::Electron& e){
       cuts["iso2"]   = 0;
       cuts["iso3"]   = 0;
       cuts["iso4"]   = 0;
-      return cuts;
+      cuts["trig"]   = 0;     
+       return cuts;
     }
   
   //Default values must fail any sensible IsoCut
@@ -151,8 +152,8 @@ eSelector::CutRecord(const pat::Electron& e){
 
 
 
-      iso4 = iso1 + std::max(0.0, iso2+iso3-rho_*EffectiveArea);
-
+      iso4 = iso1 + std::max(0.0, iso2+iso3-max(rho_,0.0)*EffectiveArea);
+      //cout<<iso4<<" "<<iso1<<" "<<iso2<<" "<<iso3<<" "<<rho_<<" "<<EffectiveArea<<endl;
     }
   else 
     iso4 = (iso1+iso2+iso3);
@@ -177,7 +178,7 @@ eSelector::CutRecord(const pat::Electron& e){
 
   cuts["ptx"]    = pt>ptX_;
   cuts["etax"]   = !(ingap)&&fabs(eta)<etaX_;
-
+  cuts["trig"]   =passTriggerTight;
      
   if(e.isEB()){
 
@@ -206,7 +207,8 @@ eSelector::CutRecord(const pat::Electron& e){
       cuts["iso1"]   = 1;
       cuts["iso2"]   = 1;
       cuts["iso3"]   = 1;
-      cuts["iso4"]   = iso4 < iso4BrlX_ && passTriggerTight;
+  //    cuts["iso4"]   = iso4 < iso4BrlX_ && passTriggerTight;
+      cuts["iso4"]   = iso4 < iso4BrlX_ ;//the trigger is using only for barrel before, is it correct? 
     }
     else{
       cuts["iso1"]   = iso1 < iso1BrlX_;
@@ -252,6 +254,7 @@ eSelector::CutRecord(const pat::Electron& e){
       cuts["iso3"]   = iso3 < iso3EcpX_;
       cuts["iso4"]   = 1;
     }
+
   }
     
      

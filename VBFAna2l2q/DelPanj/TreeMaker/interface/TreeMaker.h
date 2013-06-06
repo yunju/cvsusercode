@@ -19,6 +19,7 @@
 #include "DelPanj/TreeMaker/interface/photonTree.h"
 #include "DelPanj/TreeMaker/interface/patElecIsoTree.h"
 #include "DelPanj/TreeMaker/interface/ZZTree.hh"
+#include "DelPanj/TreeMaker/interface/YJHiggTree.hh"
 #include "TTree.h"
 #include "TFile.h"
 
@@ -48,6 +49,7 @@ class TreeMaker : public edm::EDAnalyzer {
       bool fillJetInfo_;
       bool fillPhotInfo_;
       bool fillZZInfo_;
+      bool fillYJHiggInfo_;
 
       puweight *puweight_;
       eventInfo   *eventInfo_;
@@ -60,7 +62,7 @@ class TreeMaker : public edm::EDAnalyzer {
       photonTree  *photonTree_;
       patHltTree  *patHltTree_;      
       ZZTree      *ZZTree_;
-
+      YJHiggTree  *YJHiggTree_;
 };
 
 

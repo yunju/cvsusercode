@@ -201,7 +201,7 @@ edm::Handle<double> ele_rho_event;
 iEvent.getByLabel(EleRhoLabel_,ele_rho_event);
 
 lepIsoRho_.push_back(*(ele_rho_event.product()));
- 
+//cout<<"lepIsoRho_"<<*(ele_rho_event.product())<<endl; 
   pat::ElectronCollection eleColl(*(patElecHandle.product()));
   std::sort(eleColl.begin(),eleColl.end(),PtGreater());
 
@@ -234,25 +234,25 @@ lepIsoRho_.push_back(*(ele_rho_event.product()));
 //       patElecRelIsoComb_.push_back( ( ele->dr03TkSumPt() + ele->dr03EcalRecHitSumEt() + ele->dr03HcalTowerSumEt() ) / ele->p4().Pt() ) ;
      
      
-//     double supercluster_e =-999;
+     double supercluster_e =-999;
     double sigihih = -999;
     double deletain = -999;
     double delphiin = -999;
     double hoe = -999;
-//     double supercluster_et =-999;
-//     double supercluster_eta =-999;
-//     double supercluster_phi =-999;
+     double supercluster_et =-999;
+     double supercluster_eta =-999;
+     double supercluster_phi =-999;
     
-//     if(ele->superCluster().isNonnull()){
-//       supercluster_et  = ele->superCluster()->energy()/cosh(ele->superCluster()->eta());
-//       supercluster_eta = ele->superCluster()->eta();
-//       supercluster_phi = ele->superCluster()->phi();
-//       supercluster_e   = ele->superCluster()->energy();
+     if(ele->superCluster().isNonnull()){
+       supercluster_et  = ele->superCluster()->energy()/cosh(ele->superCluster()->eta());
+       supercluster_eta = ele->superCluster()->eta();
+       supercluster_phi = ele->superCluster()->phi();
+       supercluster_e   = ele->superCluster()->energy();
     sigihih          = ele->sigmaIetaIeta();
     delphiin         = ele->deltaPhiSuperClusterTrackAtVtx();
     deletain         = ele->deltaEtaSuperClusterTrackAtVtx();
     hoe              = ele->hadronicOverEm();
-//     }
+     }
     
 //     //Don't know how this gonna fare in case of track-only PFElectrons.
 //     patElecScEn_.push_back(supercluster_e);
@@ -260,9 +260,9 @@ lepIsoRho_.push_back(*(ele_rho_event.product()));
     patElecDelEtaIn_.push_back(deletain);
     patElecDelPhiIn_.push_back(delphiin);
     patElecHoE_.push_back(hoe);
-//     patElecScEt_.push_back(supercluster_et);
-//     patElecScEta_.push_back(supercluster_eta);
-//     patElecScPhi_.push_back(supercluster_phi);
+     patElecScEt_.push_back(supercluster_et);
+     patElecScEta_.push_back(supercluster_eta);
+     patElecScPhi_.push_back(supercluster_phi);
 //     patElecisEcalDriven_.push_back(ele->ecalDrivenSeed());
 //     patElecisTrackerDriven_.push_back(ele->trackerDrivenSeed());
     patElecMissingHits_.push_back( ele->gsfTrack().get()->trackerExpectedHitsInner().numberOfHits() );
